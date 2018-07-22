@@ -10,6 +10,7 @@
         <module name="common-utils" />
         <module name="config-server" />
         <module name="eureka-server" />
+        <module name="old-admin-web" />
         <module name="zuul-gateway" />
       </profile>
     </annotationProcessing>

@@ -1,0 +1,216 @@
+@charset "utf-8";
+/* CSS Document */
+/*-----------------------------------// 全局样式 //-----------------------------------*/
+* {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box; /* Firefox */
+	-webkit-box-sizing: border-box; /* Safari */
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-size: 13px;
+	font-family: Arial, "宋体", Helvetica, sans-serif, Verdana;
+	color: #222;
+	background: #fcf7f1;
+	line-height: 24px;
+}
+
+ul, li, img, dl, dd, dt, form, table, tr, td, p, ol, div, input, label,
+	span, h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	padding: 0;
+}
+
+ol, ul, li {
+	list-style-type: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	empty-cells: show; /*空单元格*/
+}
+
+th, td {
+	border-collapse: collapse;
+}
+
+a {
+	blr: expression(this.onFocus = this.blur ());
+} /*for IE 去除链接虚线框*/
+a {
+	outline: none;
+} /*for Firefox*/
+img {
+	border: none;
+	max-width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	color: #333;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #F6882F;
+	text-decoration: underline;
+}
+
+.clear {
+	clear: both;
+	overflow: hidden;
+	zoom: 1;
+	height: 0;
+	padding: 0;
+	margin: 0;
+}
+
+.b {
+	font-weight: bold;
+}
+
+.float_right {
+	float: right;
+}
+
+.float_left {
+	float: left;
+}
+
+.hg10 {
+	height: 10px;
+	zoom: 1;
+	clear: both;
+	overflow: hidden;
+}
+
+.hg5 {
+	height: 5px;
+	overflow: hidden;
+	zoom: 1;
+	clear: both;
+}
+
+em {
+	font-style: normal;
+}
+/*解决ie6图片缩小出现锯齿的问题*/
+v\:* {
+	behavior: url(#default#VML);
+}
+
+img.thumb {
+	-ms-interpolation-mode: bicubic;
+}
+
+/*-----------------------------------// 内容样式 //-----------------------------------*/
+body {
+	background: #154283;
+}
+
+.main {
+	width: 280px;
+	height: 760px;
+	margin: 10px auto;
+	background: #fff;
+	padding: 10px;
+}
+
+.productImg {
+	margin: 0 auto;
+	width: 260px;
+	height: 260px;
+}
+
+/*for IE 去除链接虚线框*/
+.productTitle {
+	height: 30px;
+	margin: 10px 0 20px;
+}
+
+.productName {
+	float: left;
+	width: 60%;
+	font-size: 24px;
+	line-height: 30px;
+}
+
+.pricePanel {
+	float: left;
+	width: 40%;
+	text-align: right;
+	padding-right: 10px;
+}
+
+/*产品图片 名称 数量加减*/
+.productNum {
+	width: 200px;
+	margin: 0 auto 10px;
+}
+
+.J_ItemAmount {
+	width: 100px;
+	float: left;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	border: none;
+	font-size: 24px;
+}
+
+.J_Minus {
+	
+	width: 50px;
+	height: 50px;
+	display: inline-block;
+	text-indent: -9999px;
+	float: left;
+}
+
+.J_Plus {
+	
+	width: 50px;
+	height: 50px;
+	display: inline-block;
+	text-indent: -9999px;
+}
+
+/*产品属性*/
+.productContent .productCate {
+	padding: 5px;
+	height: 28px;
+	line-height: 28px;
+}
+
+.productContent input[type="radio"] {
+	display: none;
+}
+
+.productContent input[type="radio"]+label {
+	display: inline-block;
+	background: #e2e2e2;
+	cursor: pointer;
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	margin-bottom: 10px;
+}
+.productContent input[type="radio"] + label.disabled{background: #e2e2e2 ;color: #bdbdbd;}
+
+.productContent input[type="radio"]:checked+label {
+	background: #f8b95a;
+	color: #fff;
+}
+
+.submit {
+	width: 100%;
+	height: 40px;
+	color: #fff;
+	background: #f44b5e;
+	border: none;
+	color: #fff;
+	font-size: 24px;
+}
