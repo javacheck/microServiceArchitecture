@@ -1,4 +1,4 @@
-<%@tag import="cn.lastmiles.utils.SecurityUtils"%>
+<%@tag import="cn.self.cloud.utils.SecurityUtils"%>
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%--

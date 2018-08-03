@@ -51,7 +51,7 @@ public class WebAppInit extends
 		FilterRegistration.Dynamic decoraFilter = servletContext.addFilter(
 				"decoraFilter", new DecoraServletFilter());
 		decoraFilter.setInitParameter("decora.manager",
-				"cn.lastmiles.decora.AppDecoraManager");
+				"cn.self.cloud.decora.AppDecoraManager");
 		decoraFilter.setAsyncSupported(isAsyncSupported());
 		decoraFilter.addMappingForServletNames(getDispatcherTypes(), true,
 				getServletName());
