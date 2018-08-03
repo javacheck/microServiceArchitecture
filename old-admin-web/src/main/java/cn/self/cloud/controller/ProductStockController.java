@@ -46,8 +46,8 @@ public class ProductStockController {
 	@Autowired
 	private IdService idService;
 	
-	@Autowired
-	private FileService fileService;
+//	@Autowired
+//	private FileService fileService;
 	/**
 	 * 所有商品库存列表
 	 * 
@@ -228,7 +228,8 @@ public class ProductStockController {
 		 	ProductImage productImage=null;
 		    for(int i=0;i<imageFile.length;i++){
 		    	in=imageFile[i].getInputStream();
-		    	String id = fileService.save(in);//图片ID
+//		    	String id = fileService.save(in);//图片ID
+				String id = null;
 		    	//图片后缀
 		    	String suffix=imageFile[i].getOriginalFilename().substring(imageFile[i].getOriginalFilename().lastIndexOf(".")+1, imageFile[i].getOriginalFilename().length());
 		    	productImage=new ProductImage();

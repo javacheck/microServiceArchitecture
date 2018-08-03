@@ -44,8 +44,8 @@ public class ProductUploadController {
 	@Autowired
 	private ProductStockService productStockService;
 	
-	@Autowired
-	private FileService fileService;
+//	@Autowired
+//	private FileService fileService;
 	
 	@RequestMapping(value = "list")
 	public String list() {
@@ -303,7 +303,7 @@ public class ProductUploadController {
 							 for (int k = 0; k < tempList.length; k++) {
 							   if (tempList[k].isFile()) {
 								   InputStream is = new FileInputStream(tempList[k]); 
-								   imageId=fileService.save(is);
+								   imageId=null;//fileService.save(is);
 								   imageList.add(imageId+","+tempList[k].toString().substring(tempList[k].toString().lastIndexOf("\\")+1, tempList[k].toString().length()));
 							   }
 							 }

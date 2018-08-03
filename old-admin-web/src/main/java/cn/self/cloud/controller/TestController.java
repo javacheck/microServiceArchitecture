@@ -15,8 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("test")
 @Controller
 public class TestController {
-	@Autowired
-	private FileService fileService;
+//	@Autowired
+//	private FileService fileService;
 
 	@RequestMapping(value = "upload", method = RequestMethod.GET)
 	public String upload() {
@@ -26,7 +26,7 @@ public class TestController {
 	@RequestMapping(value = "upload", method = RequestMethod.POST)
 	public String upload(MultipartFile image, Model model) throws IOException {
 		InputStream in = image.getInputStream();
-		String id = fileService.save(in);
+		String id = null; //fileService.save(in);
 		in.close();
 		model.addAttribute("fileId", id);
 		return "test/upload";

@@ -6,14 +6,15 @@ import com.github.junrar.rarfile.FileHeader;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
-
 import java.io.*;
 import java.util.Enumeration;
 
+/**
+ * 压缩/解压缩
+ */
 public abstract class CompressFileUtils {
     /**
-     * 压缩文件
-     *
+     * 功能：压缩文件
      * @param srcfile File[] 需要压缩的文件列表
      * @param zipfile File 压缩后的文件
      */
@@ -21,7 +22,8 @@ public abstract class CompressFileUtils {
         byte[] buf = new byte[1024];
         try {
             ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipfile));
-            for (int i = 0; i < srcfile.length; i++) {
+            int length = srcfile.length;
+            for (int i = 0; i < length; i++) {
                 FileInputStream in = new FileInputStream(srcfile[i]);
                 out.putNextEntry(new ZipEntry(srcfile[i].getName()));
                 int len;
@@ -38,8 +40,7 @@ public abstract class CompressFileUtils {
     }
 
     /**
-     * zip解压缩
-     *
+     * 功能：zip解压缩文件
      * @param zipfile File 需要解压缩的文件
      * @param descDir String 解压后的目标目录
      */
@@ -47,7 +48,7 @@ public abstract class CompressFileUtils {
         try {
             ZipFile zf = new ZipFile(zipfile);
             for (Enumeration<ZipEntry> entries = zf.getEntries(); entries.hasMoreElements(); ) {
-                ZipEntry entry = ((ZipEntry) entries.nextElement());
+                ZipEntry entry = (entries.nextElement());
                 String zipEntryName = entry.getName();
                 InputStream in = zf.getInputStream(entry);
                 OutputStream out = new FileOutputStream(descDir + zipEntryName);
@@ -65,14 +66,14 @@ public abstract class CompressFileUtils {
     }
 
     /**
-     * 根据原始rar路径，解压到指定文件夹下.
-     *
+     * 功能：根据原始rar路径，解压到指定文件夹下.
      * @param srcRarPath       原始rar路径
      * @param dstDirectoryPath 解压到的文件夹
      */
     public static void unRarFile(String srcRarPath, String dstDirectoryPath) {
         File dstDirectory = new File(dstDirectoryPath);
-        if (!dstDirectory.exists()) {// 目标目录不存在时，创建该文件夹
+        // 目标目录不存在时，创建该文件夹
+        if (!dstDirectory.exists()) {
             dstDirectory.mkdirs();
         }
         Archive archive;
@@ -81,10 +82,12 @@ public abstract class CompressFileUtils {
             if (ValidateUtils.isNotEmpty(archive)) {
                 FileHeader fh = archive.nextFileHeader();
                 while (fh != null) {
-                    if (fh.isDirectory()) { // 文件夹
+                    // 文件夹
+                    if (fh.isDirectory()) {
                         File fol = new File((dstDirectoryPath + File.separator + fh.getFileNameString()).replaceAll("\\\\", "/"));
                         fol.mkdirs();
-                    } else { // 文件
+                    } // 文件
+                    else {
                         File out = new File((dstDirectoryPath + File.separator + fh.getFileNameString().trim()).replaceAll("\\\\", "/"));
                         try {// 之所以这么写try，是因为万一这里面有了异常，不影响继续解压.
                             if (!out.exists()) {
@@ -107,5 +110,14 @@ public abstract class CompressFileUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // 单元测试
+    public static void main(String[] args) {
+        File s = new File("S:\\serverSpace\\nginx-1.13.1\\conf");
+        File d = new File("S:\\test.rar");
+        ZipFiles(s.listFiles(),d);
+        unZipFiles(d,"S:\\D");
+        unRarFile(d.getAbsolutePath(),"S:\\D");
     }
 }
