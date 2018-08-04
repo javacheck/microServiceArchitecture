@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<sql id="getAllocationConfigByStoreId">
+	<![CDATA[
+	select * from t_allocation_config where 1 = 1
+	<#if storeId ??>
+		and storeId = :storeId
+	</#if>
+	]]>
+</sql>
+
+
+<sql id="updateAllocationConfig">
+	<![CDATA[
+	update t_allocation_config set 
+		status = :status
+		where storeId = :storeId
+	]]>
+</sql>
+<sql id="delAllocationConfig">
+	<![CDATA[
+	delete from t_allocation_config 
+		where storeId = :storeId
+	]]>
+</sql>
+<sql id="findTotal">
+	<![CDATA[
+	select count(*) from  t_allocation_record ar where 1=1
+		<#if fromStoreId ??>
+			and ar.fromStoreId in ( :fromStoreId )
+		</#if>
+		
+		<#if toStoreId ??>
+			and ar.toStoreId in ( :toStoreId )
+		</#if>
+		
+		<#if allocationNumber != ''>
+			and ar.allocationNumber like :allocationNumber
+		</#if>
+		
+		<#if status ??>
+			and ar.status= :status
+		</#if>
+		
+		<#if beginTime !=''>
+			and ar.allocationTime >= :beginTime
+		</#if>
+		
+		<#if endTime !=''>
+			and ar.allocationTime <= :endTime
+		</#if>
+		<#if storeId ??>
+			and (ar.fromStoreId in ( :storeId ) or ar.toStoreId in ( :storeId ) )
+		</#if>
+	]]>
+</sql>
+<sql id="findAllPage">
+	<![CDATA[
+		
+		select ar.*,(select name from t_store s where s.id=ar.fromStoreId) as fromStoreName,
+			(select name from t_store s where s.id=ar.toStoreId) as toStoreName,
+			(select mobile from t_account a where a.id=ar.accountId) as accountMobile
+		 from  t_allocation_record ar where 1=1
+		<#if fromStoreId ??>
+			and ar.fromStoreId in ( :fromStoreId )
+		</#if>
+		<#if toStoreId ??>
+			and ar.toStoreId in ( :toStoreId )
+		</#if>
+		<#if allocationNumber!=''>
+			and ar.allocationNumber like :allocationNumber
+		</#if>
+		<#if status ??>
+			and ar.status= :status
+		</#if>
+		
+		<#if beginTime !=''>
+			and ar.allocationTime >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and ar.allocationTime <= :endTime
+		</#if>
+		<#if storeId ??>
+			and (ar.fromStoreId in ( :storeId ) or ar.toStoreId in ( :storeId ) )
+		</#if>
+		order by ar.id desc
+		  limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+
+<sql id="findAll">
+	<![CDATA[
+		
+		select ar.*,(select name from t_store s where s.id=ar.fromStoreId) as fromStoreName,
+			(select name from t_store s where s.id=ar.toStoreId) as toStoreName,
+			(select mobile from t_account a where a.id=ar.accountId) as accountMobile
+		 from  t_allocation_record ar where 1=1
+		<#if fromStoreId ??>
+			and ar.fromStoreId in ( :fromStoreId )
+		</#if>
+		<#if toStoreId ??>
+			and ar.toStoreId in ( :toStoreId )
+		</#if>
+		<#if allocationNumber!=''>
+			and ar.allocationNumber like :allocationNumber
+		</#if>
+		<#if status ??>
+			and ar.status= :status
+		</#if>
+		
+		<#if beginTime !=''>
+			and ar.allocationTime >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and ar.allocationTime <= :endTime
+		</#if>
+		<#if storeId ??>
+			and (ar.fromStoreId in ( :storeId ) or ar.toStoreId in ( :storeId ) )
+		</#if>
+		order by ar.id desc
+		
+	]]>
+</sql>
+<sql id="findProductStockList">
+	<![CDATA[
+		
+		select ps.id,ps.stock,p.name as productName,ps.attributeName,ps.barCode,ps.productId,ps.alarmValue,ps.attributeCode,
+		(select name from t_product_category pc where pc.id=p.categoryId) as categoryName
+		 from t_product_stock ps left join t_product p on ps.productId=p.id where 1=1
+		<#if ids ??>
+			and ps.id in ( :ids )
+		</#if>
+		
+	]]>
+</sql>
+<sql id="findTotalSum">
+	<![CDATA[
+	select count(*) from  t_allocation_record ar where 1=1
+		and date_format(ar.createdTime,'%Y-%m-%d') = date_format(:date,'%Y-%m-%d')
+		and toStoreId=:storeId
+	]]>
+</sql>
+
+<sql id="findAllocationRecordStockList">
+	<![CDATA[
+		
+		select *,(select stock from t_product_stock ps where ps.id=ars.stockId) as stock,(select alarmValue from t_product_stock ps where ps.id=ars.stockId) as alarmValue
+		 from t_allocation_record_stock  ars left join t_allocation_record ar on ars.allocationRecordId=ar.id where 1=1
+		<#if allocationRecordId ??>
+			and ars.allocationRecordId = :allocationRecordId
+		</#if>
+		order by ars.stockId desc
+	]]>
+</sql>
+<sql id="updateAllocationStatus">
+	<![CDATA[
+	update t_allocation_record set 
+		status = :status
+		where id = :id
+	]]>
+</sql>
+<sql id="subtractStockAmount">
+	<![CDATA[
+	update t_product_stock set 
+		stock = (stock-:amount)
+		where id = :stockId
+	]]>
+</sql>
+<sql id="addStockAmount">
+	<![CDATA[
+	update t_product_stock set 
+		stock = (stock+:amount)
+		where id = :stockId
+	]]>
+</sql>
+
+<sql id="findProductStock">
+	<![CDATA[
+		
+		select * from t_product_stock ps inner join t_product p on ps.productId=p.id 
+		where 1=1
+		and ps.storeId = :storeId
+		and ps.barCode = :barCode
+		and p.name=:productName
+		and p.type=:type
+	]]>
+</sql>
+
+<sql id="addConfirmStockAmount">
+	<![CDATA[
+	update t_product_stock set 
+		stock = (stock+:amount)
+		where barCode = :barCode 
+		and storeId=:storeId
+		and attributeName=:attributeName
+	]]>
+</sql>
+<sql id="addConfirmStockAmountById">
+	<![CDATA[
+	update t_product_stock set 
+		stock = (stock+:amount)
+		where id=:id
+	]]>
+</sql>
+<sql id="findProductStockById">
+	<![CDATA[
+		
+		select ps.*,(select name from t_product_unit pu where pu.id=ps.unitId) as unitName
+		 from t_product_stock  ps where 1=1
+		<#if id ??>
+			and ps.id = :id
+		</#if>
+	]]>
+</sql>
+
+<sql id="findProductById">
+	<![CDATA[
+		
+		select p.*,(select name from t_brand b where b.id=p.brandId) as brandName,
+		(select name from t_product_category pc where pc.id=p.categoryId) as categoryName
+		 from t_product  p where 1=1
+		<#if id ??>
+			and p.id = :id
+		</#if>
+	]]>
+</sql>
+
+<sql id="findProductCategory">
+	<![CDATA[
+		
+		select *
+		 from t_product_category  pc where 1=1
+		<#if storeId ??>
+			and pc.storeId = :storeId
+		</#if>
+		<#if categoryName !=''>
+			and pc.name = :categoryName
+		</#if>
+	]]>
+</sql>
+<sql id="findPSList">
+	<![CDATA[
+		select ps.* from t_product_stock ps inner join t_product p on ps.productId=p.id 
+			and ps.barCode=:barCode
+			and p.name=:productName  and p.type=:type 
+		    and p.storeId=:storeId
+		    order by ps.id desc
+		    
+	]]>
+</sql>
+
+<sql id="typefinishChangeByallocationId">
+	<![CDATA[
+	update t_allocation_record set 
+		status = :status,finishTime=:finishTime
+		where id = :id
+	]]>
+</sql>
+<sql id="updateLastAmounts">
+	<![CDATA[
+	update t_allocation_record_stock set 
+		lastAmount = :lastAmount
+		where allocationRecordId = :allocationRecordId and stockId=:stockId
+	]]>
+</sql>
+
+</root>

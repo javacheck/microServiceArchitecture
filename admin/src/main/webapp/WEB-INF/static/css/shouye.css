@@ -1,0 +1,413 @@
+/* 
+* @Author: Marte
+* @Date:   2016-04-19 15:07:58
+* @Last Modified by:   Marte
+* @Last Modified time: 2016-05-27 09:54:21
+*/
+
+ul,ol{
+    list-style:none;
+}
+i{
+    font-style: normal;
+}
+a{
+    text-decoration:none;
+}
+a:hover{
+    text-decoration:none;
+}
+
+
+.navbar{
+    height: 70px;
+    
+}                             
+.logo{
+    float: left;
+    text-align: center;
+    padding-top: 10px;
+    padding-left: 20px;
+    margin-right: 80px;
+    color:#fff;
+}
+    .logo img{
+        width: 50px;
+        height: 50px;
+        float:left;
+    }                           
+    .logo p{
+        font-size: 20px;
+        float: left;
+        line-height: 55px;
+        padding-left: 8px;
+    }      
+
+
+    .navbar-inverse,.navbar-left{
+        background-color:#00A1E4;
+        
+    }  
+    .navbar-inverse{
+        border:none;
+        
+    }   
+
+    .navbar-left>li>a{
+        width: 100px;
+        height: 100%;
+        line-height: 70px;
+        text-align: center;
+        font-size: 18px;
+        color: #fff;
+    }   
+                                 
+
+    .navbar-inverse .navbar-nav>li>a {
+        color: #fff;
+    }                           
+    .navbar-nav>li>a{
+        padding:0;
+        margin:0;
+    }
+
+        .navbar-nav .move{
+            background: #0078A8;
+        }
+        .navbar-nav>li>a:hover{
+            background: #0078A8 !important;
+        }
+.li{
+    position:relative;
+}
+    .li ul{
+        width: 150px;
+        border:1px solid #797979;
+        padding-left: 0;
+        line-height: 35px;
+        display:none;
+        position:absolute;
+        top:70px;
+        left:0;
+        background:#fff;
+
+    }
+    .li ul a{
+        width: 100%;
+        display:block;
+        padding-left: 20px;
+    }
+    .li ul a:hover{
+        background:#ccc;
+    }
+	.li ol{
+    padding-left:23px;
+    padding-right:22px;
+	}
+
+    .navbar-right{
+        font-size: 16px;
+    }
+    .navbar-right p{
+        margin:0 0 5px;
+    }
+   
+section{
+    margin-top:80px;
+    text-align: center;
+    color:#333;
+    line-height: 3;
+    padding:0 50px;
+}
+    .title{
+        border-bottom:1px solid #E2E2E2;
+        padding:50px 0 30px 0;
+    }
+        .title h2{
+            font-size: 40px;
+        }
+    .content ul{
+        display: inline-block;
+    }
+        .content>ul>li{
+            width:387px;
+            height:270px;  
+            float:left;
+        }                               
+            .content li .icon{
+                width: 60px;
+                height: 60px;
+                display: block;
+                margin: 0 auto;
+                background:url(../images/pic.png) no-repeat;
+                background-position: 0 0;
+            } 
+            
+            .li-col{
+                padding-top: 30px;
+                box-sizing: border-box;
+                margin: 60px auto;
+                background: rgb(240, 240, 240) none repeat scroll 0% 0%;
+                border: 1px solid rgb(228, 228, 228);
+                width: 300px;
+                height: 194px;
+            }                           
+           
+            .content li .commodity{
+                background-position: 0 -60px;
+            }
+            .content li .sales{
+                background-position: 0 -120px;
+            }
+
+            .content li .member{
+                background-position: 0 -180px;
+            }
+            .content li .procurement{
+                background-position: 0 -240px;
+            }
+            .content li .inventory{
+                background-position: 0 -300px;
+            }
+            .content li .business{
+                background-position: 0 -360px;
+            }
+            .content li .account{
+                background-position: 0 -420px;
+            }
+            .content li .help{
+                background-position: 0 -480px;
+            }
+
+            .content ol li{
+                line-height: 22px;
+                text-align: left;
+                
+            }
+                .content ol li span{
+                    padding-right:6px;
+                    color:#999;
+                }
+
+        .content i{
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        em{
+            width:12px;
+            height: 8px;
+            display:inline-block;
+            background:url(../images/pic.png) no-repeat 0 -540px;
+            margin-left: 6px;
+        }
+                
+    
+        
+
+
+
+
+
+
+    /*登录界面*/
+
+    .head h1{
+        padding: 0;
+        margin: 0;
+        line-height: 65px;
+    }
+    .w{ 
+        max-width:1037px;
+        margin:0 auto;
+    }
+    html{
+        height: 100%;
+    }
+        .body-bg{
+            padding-top:151px;
+            background:url(../images/bg.png) no-repeat center;
+            background-size: cover;
+            background-attachment:fixed;
+            height: 100%;
+        }
+        
+        
+    .section{
+        
+        height: 509px;
+        
+        background:url(../images/bg-kuang.png) no-repeat center;
+        background-size: cover;
+        position: relative;
+    }
+        .head{
+            height: 93px;
+            padding:15px 0;
+            box-sizing: border-box;
+            background: url(../images/xian.png) no-repeat bottom;
+            margin:0 30px;
+        }
+            .head img,.head h1,.content-l,.content-r{
+                float:left;
+
+            }
+            .head h1{
+                padding-left:10px;
+                font-size: 38px;
+                color:#4c4e4e;
+                font-family: "方正准圆简体";
+            }
+            .head img{
+                width: 76px;
+                height: 60px;
+            }
+            .content-l{
+                width: 640px;
+                padding-top:40px;
+                position:relative;
+            }
+            .shuxian{
+                position:absolute;
+                right:0;
+                top:40px;
+                height: 224px;
+                width: 4px;
+            }
+                .import{
+                    margin-bottom:24px;
+                    position:relative;
+                    
+                }
+                    .import span,.import-che span{
+                        width: 212px;
+                        text-align: right;
+                        font-size: 23px;
+                        display:inline-block;
+                        
+                    }
+                    .import input,select.pull-down{
+                        width: 320px;
+                        height: 37px;
+                        border:1px solid #b5b5b5;
+                        background:#fff;
+                        font-size: 20px;
+                        color:#55617c;
+                        padding-left:8px;
+                    }
+                    .import .verification{
+                        width: 192px;
+                    }
+                    .yangzheng{
+                        width: 100px;
+                        height: 37px;
+                        display: inline-block;
+                        background: #ccc;
+                        position: absolute;
+                        top: 1px;
+                        left: 430px;
+                    }
+                    select.pull-down{
+                        appearance:none;
+                        -moz-appearance:none;
+                        -webkit-appearance:none;
+                        background: url("../images/jiangtou.jpg") no-repeat scroll right 10px center #fff;
+                        padding-right: 14px;
+                        background:#fff\0;  /* ie 8/9/10/Opera - for ie8/ie10/Opera */  
+					    background:#fff\9\0;  /* ie 9/10 - for ie9/10 */  
+					    *background:#fff;  /* ie 6/7 - for ie7 */  
+					    _background:#fff;
+					    padding-right: 0\0;
+					    padding-right: 0\9\0;
+					    *padding-right: 0;
+					    _padding-right: 0;
+                    }
+                    
+                    select.pull-down option{
+                        line-height: 35px;
+                        font-size: 20px;
+                    }
+                .import-che{
+                    font-size: 15px;
+                    position:relative;
+                    margin-bottom:14px;
+                }
+                    .import-che input{
+                        width: 16px;
+                        height: 16px;
+                        margin-top:6px;
+                    }
+                    
+                    .import-che i{
+                        position:absolute;
+                        top:2px;
+                        left:241px;
+                    }
+                button{
+                    margin:0 auto;
+                    display:block;
+                    padding: 8px 21px;
+                    font-size: 25px;
+                    color:#fff;
+                    border:none;
+                    border-radius: 5px;
+                    background:url(../images/denglu.png) no-repeat center;
+                    background-size: cover;
+                }
+            .content-r{
+                width: 355px;
+                text-align: center;
+            }
+                .content-r img{
+                    width: 229px;
+                    height: 229px;
+                    margin: 37px auto 10px;
+                    display: block;
+                }
+                .content-r i{
+                    font-size: 18px;
+                }
+    footer{
+        text-align: center;
+    }
+        footer ul{
+            overflow: hidden;
+            margin:54px auto 34px;
+            width: auto;
+            display:inline-block;
+            padding-left:0;
+
+        }
+            footer ul li{
+                float:left;
+                margin:0 47px;
+                font-size: 18px;
+
+            }
+            footer li a{
+                color:#55617c;
+            }
+                footer li a:hover{
+                    color:#5592E6;
+                }
+        footer p{
+            font-size: 16px;
+        }
+.content-l{
+   position: relative;
+}       
+.popup{
+    position: absolute;
+    top:12px;
+    left:220px;
+    font-size: 20px;
+    color:red;
+}
+        
+
+
+
+
+
+
+

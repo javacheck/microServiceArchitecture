@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+
+<sql id="findUserListByBirthDay">
+	<![CDATA[
+	
+		select * from t_user where date_sub(CONCAT(YEAR(CURDATE()),DATE_FORMAT(birthday,'-%m-%d')),interval 7 day)=:date
+		and storeId is not null
+	
+	]]>
+</sql>
+
+</root>

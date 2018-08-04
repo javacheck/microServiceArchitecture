@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<sql id="findTotal">
+	<![CDATA[
+		select count(1) from t_purchase_acceptance pa left join t_account a on pa.accountId=a.id where 1=1
+		<#if storeId ??>
+			and pa.storeId = :storeId
+		</#if>
+		<#if purchaseNumber!=''>
+			and pa.purchaseNumber like :purchaseNumber
+		</#if>
+		<#if beginTime !=''>
+			and pa.createdTime >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and pa.createdTime <= :endTime
+		</#if>
+		<#if mobile !=''>
+			and a.mobile like :mobile
+		</#if>
+		<#if status ??>
+			and pa.status = :status
+		</#if>
+	]]>
+</sql>
+
+<sql id="findAllPage">
+	<![CDATA[
+	select pa.*,a.mobile from t_purchase_acceptance pa left join t_account a on pa.accountId=a.id where 1=1
+		<#if storeId ??>
+			and pa.storeId = :storeId
+		</#if>
+		<#if purchaseNumber!=''>
+			and pa.purchaseNumber like :purchaseNumber
+		</#if>
+		<#if beginTime !=''>
+			and pa.createdTime >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and pa.createdTime <= :endTime
+		</#if>
+		<#if mobile !=''>
+			and a.mobile like :mobile
+		</#if>
+		<#if status ??>
+			and pa.status = :status
+		</#if>
+		order by pa.id desc
+		 limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+<sql id="updatePurchaseAcceptance">
+	<![CDATA[
+	update t_purchase_acceptance set 
+		createdTime = :createdTime,accountId=:accountId,storageNumber=:storageNumber,
+		status=:status,memo=:memo,
+		imageId=:imageId
+		where id = :id
+		
+	]]>
+</sql>
+<sql id="findPaExist">
+	<![CDATA[
+	select * from t_purchase_acceptance where 1=1
+		and purchaseNumber=:purchaseNumber and storeId=:storeId
+		<#if id ??>
+			and id != :id
+		</#if>
+		
+		
+	]]>
+</sql>
+</root>

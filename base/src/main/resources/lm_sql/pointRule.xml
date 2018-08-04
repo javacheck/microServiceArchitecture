@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<sql id="getPointRuleByStoreId">
+	<![CDATA[
+	select * from t_point_rule where 1 = 1
+	<#if storeId ??>
+		and storeId = :storeId
+	</#if>
+	]]>
+</sql>
+
+
+<sql id="updatePointRule">
+	<![CDATA[
+	update t_point_rule set 
+		money = :money,point=:point,validTime=:validTime,status=:status,
+		birthdayDoublePoint=:birthdayDoublePoint,evaluatePoint=:evaluatePoint,numberDay=:numberDay,
+		costPoint=:costPoint,equalMoney=:equalMoney,restriction=:restriction
+		where id = :id
+	]]>
+</sql>
+</root>

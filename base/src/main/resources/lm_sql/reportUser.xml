@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<sql id="findTotal">
+	<![CDATA[
+		select count(1) from (select storeId from t_report_user where 1 = 1 
+			<#if storeId ??>
+				and storeId in ( :storeId )
+			</#if>
+			<#if beginTime != ''>
+				and reportDate >= :beginTime
+			</#if>
+			<#if endTime != ''>
+				and reportDate <= :endTime
+			</#if>
+			GROUP BY storeId)a
+	]]>
+</sql>
+<sql id="findStoreTotal">
+	<![CDATA[
+		select count(1) from(
+		select reportDate from t_report_user where 1 = 1 
+			<#if storeId ??>
+				and storeId = :storeId
+			</#if>
+			<#if beginTime != ''>
+				and reportDate >= :beginTime
+			</#if>
+			<#if endTime != ''>
+				and reportDate <= :endTime
+			</#if>
+			<#if type ==0>
+			group by date_format(reportDate,'%Y-%m-%d')
+			</#if>
+			 <#if type ==1>
+				group by date_format(reportDate,'%Y-%m')
+			</#if>
+			)a
+	]]>
+</sql>
+
+<sql id="findAllPage">
+	<![CDATA[
+	select a.userNum,a.recharge,a.consumption,a.totalBalance,a.totalPoint,a.totalUserNum,
+	a.totalRecharge,a.totalConsumption,a.storeName from(
+		select ru.storeId,ru.reportDate,sum(ru.userNum) as userNum,sum(ru.recharge) recharge,
+			sum(ru.consumption)as consumption,sum(ru.totalBalance)as totalBalance,sum(ru.totalPoint)as totalPoint,
+			ru.totalUserNum,ru.totalRecharge,ru.totalConsumption,
+			(select name from t_store s where s.id=ru.storeId) as storeName
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId in ( :storeId )
+		</#if>
+		<#if beginTime !=''>
+			and ru.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and ru.reportDate <= :endTime
+		</#if>
+		GROUP BY ru.storeId)a
+		<#if sort==1>
+			order by a.userNum
+		</#if>
+		<#if sort==2>
+			order by a.userNum desc
+		</#if>
+		<#if sort==3>
+			order by a.recharge
+		</#if>
+		<#if sort==4>
+			order by a.recharge desc
+		</#if>
+		<#if sort==5>
+			order by a.consumption
+		</#if>
+		<#if sort==6>
+			order by a.consumption desc
+		</#if>
+		<#if sort==7>
+			order by a.totalBalance
+		</#if>
+		<#if sort==8>
+			order by a.totalBalance desc
+		</#if>
+		<#if sort==9>
+			order by a.totalPoint
+		</#if>
+		<#if sort==10>
+			order by a.totalPoint desc
+		</#if>
+		<#if sort==11>
+			order by a.totalUserNum
+		</#if>
+		<#if sort==12>
+			order by a.totalUserNum desc
+		</#if>
+		<#if sort==13>
+			order by a.totalRecharge
+		</#if>
+		<#if sort==14>
+			order by a.totalRecharge desc
+		</#if>
+		<#if sort==15>
+			order by a.totalConsumption
+		</#if>
+		<#if sort==16>
+			order by a.totalConsumption desc
+		</#if>
+		 limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+<sql id="findTotalReportUserList">
+	<![CDATA[
+	select a.totalBalance,a.totalPoint,a.totalUserNum,
+	a.totalRecharge,a.totalConsumption,a.storeName from(
+		select ru.storeId,ru.reportDate,
+			ru.totalBalance,ru.totalPoint,ru.totalUserNum,ru.totalRecharge,ru.totalConsumption,
+			(select name from t_store s where s.id=ru.storeId) as storeName
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId in ( :storeId )
+		</#if>
+		
+		<#if endTime !=''>
+			and date_format(ru.reportDate,'%Y-%m-%d') = :endTime
+		</#if>
+		GROUP BY ru.storeId)a
+		<#if sort==1>
+			order by a.userNum
+		</#if>
+		<#if sort==2>
+			order by a.userNum desc
+		</#if>
+		<#if sort==3>
+			order by a.recharge
+		</#if>
+		<#if sort==4>
+			order by a.recharge desc
+		</#if>
+		<#if sort==5>
+			order by a.consumption
+		</#if>
+		<#if sort==6>
+			order by a.consumption desc
+		</#if>
+		<#if sort==7>
+			order by a.totalBalance
+		</#if>
+		<#if sort==8>
+			order by a.totalBalance desc
+		</#if>
+		<#if sort==9>
+			order by a.totalPoint
+		</#if>
+		<#if sort==10>
+			order by a.totalPoint desc
+		</#if>
+		<#if sort==11>
+			order by a.totalUserNum
+		</#if>
+		<#if sort==12>
+			order by a.totalUserNum desc
+		</#if>
+		<#if sort==13>
+			order by a.totalRecharge
+		</#if>
+		<#if sort==14>
+			order by a.totalRecharge desc
+		</#if>
+		<#if sort==15>
+			order by a.totalConsumption
+		</#if>
+		<#if sort==16>
+			order by a.totalConsumption desc
+		</#if>
+		
+		
+	]]>
+</sql>
+<sql id="findStorePageByDate">
+	<![CDATA[
+		select ru.storeId,ru.reportDate,ru.userNum,ru.recharge,
+			ru.consumption,ru.totalBalance,ru.totalPoint,
+			ru.totalUserNum,ru.totalRecharge,ru.totalConsumption,
+			(select name from t_store s where s.id=ru.storeId) as storeName
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId  = :storeId
+		</#if>
+		<#if beginTime !=''>
+			and ru.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and ru.reportDate <= :endTime
+		</#if>
+		
+		group by date_format(ru.reportDate,'%Y-%m-%d')
+			
+			order by ru.reportDate desc
+		 limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+<sql id="findStorePageByMoon">
+	<![CDATA[
+		select ru.storeId,ru.reportDate,sum(ru.userNum) as userNum,sum(ru.recharge) as recharge,
+			sum(ru.consumption) as consumption,
+			(select name from t_store s where s.id=ru.storeId) as storeName
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId  = :storeId
+		</#if>
+		<#if beginTime !=''>
+			and ru.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and ru.reportDate <= :endTime
+		</#if>
+		
+		group by date_format(ru.reportDate,'%Y-%m')
+			
+		order by ru.reportDate desc
+		 limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+<sql id="findreportUserByLastDate">
+	<![CDATA[
+		select ru.storeId,ru.reportDate,ru.totalBalance,ru.totalPoint,
+			ru.totalUserNum,ru.totalRecharge,ru.totalConsumption,
+			(select name from t_store s where s.id=ru.storeId) as storeName
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId  = :storeId
+		</#if>
+		<#if moonDate !=''>
+			and date_format(ru.reportDate,'%Y-%m-%d')= :moonDate
+		</#if>
+	]]>
+</sql>
+<sql id="findAll">
+	<![CDATA[
+		select a.userNum,a.recharge,a.consumption,a.totalBalance,a.totalPoint,a.totalUserNum,
+	a.totalRecharge,a.totalConsumption,a.storeName from(
+		select ru.storeId,ru.reportDate,sum(ru.userNum) as userNum,sum(ru.recharge) recharge,
+			sum(ru.consumption)as consumption,sum(ru.totalBalance)as totalBalance,sum(ru.totalPoint)as totalPoint,
+			ru.totalUserNum,ru.totalRecharge,ru.totalConsumption,
+			(select name from t_store s where s.id=ru.storeId) as storeName
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId in ( :storeId )
+		</#if>
+		<#if beginTime !=''>
+			and ru.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and ru.reportDate <= :endTime
+		</#if>
+		GROUP BY ru.storeId)a
+		<#if sort==1 >
+			order by a.userNum
+		</#if>
+		<#if sort==2>
+			order by a.userNum desc
+		</#if>
+		<#if sort==3>
+			order by a.recharge
+		</#if>
+		<#if sort==4>
+			order by a.recharge desc
+		</#if>
+		<#if sort==5>
+			order by a.consumption
+		</#if>
+		<#if sort==6>
+			order by a.consumption desc
+		</#if>
+		<#if sort==7>
+			order by a.totalBalance
+		</#if>
+		<#if sort==8>
+			order by a.totalBalance desc
+		</#if>
+		<#if sort==9>
+			order by a.totalPoint
+		</#if>
+		<#if sort==10>
+			order by a.totalPoint desc
+		</#if>
+		<#if sort==11>
+			order by a.totalUserNum
+		</#if>
+		<#if sort==12>
+			order by a.totalUserNum desc
+		</#if>
+		<#if sort==13>
+			order by a.totalRecharge
+		</#if>
+		<#if sort==14>
+			order by a.totalRecharge desc
+		</#if>
+		<#if sort==15>
+			order by a.totalConsumption
+		</#if>
+		<#if sort==16>
+			order by a.totalConsumption desc
+		</#if>
+		
+	]]>
+</sql>
+<sql id="findStoreByDate">
+	<![CDATA[
+		select ru.storeId,ru.reportDate,ru.userNum,ru.recharge,
+			ru.consumption,ru.totalBalance,ru.totalPoint,
+			ru.totalUserNum,ru.totalRecharge,ru.totalConsumption,
+			(select name from t_store s where s.id=ru.storeId) as storeName
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId  = :storeId
+		</#if>
+		<#if beginTime !=''>
+			and ru.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and ru.reportDate <= :endTime
+		</#if>
+		
+		group by date_format(ru.reportDate,'%Y-%m-%d')
+			
+			order by ru.reportDate desc
+	]]>
+</sql>
+<sql id="findStoreByMoon">
+	<![CDATA[
+		select ru.storeId,ru.reportDate,sum(ru.userNum) as userNum,sum(ru.recharge) as recharge,
+			sum(ru.consumption) as consumption,
+			(select name from t_store s where s.id=ru.storeId) as storeName
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId  = :storeId
+		</#if>
+		<#if beginTime !=''>
+			and ru.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and ru.reportDate <= :endTime
+		</#if>
+		
+		group by date_format(ru.reportDate,'%Y-%m')
+			
+		order by ru.reportDate desc
+	]]>
+</sql>
+<sql id="findAllSum">
+	<![CDATA[
+		select ru.userNum,ru.recharge,
+			ru.consumption,ru.totalBalance,ru.totalPoint,
+			sum(ru.totalUserNum) as totalUserNum,sum(ru.totalRecharge) as totalRecharge,sum(ru.totalConsumption) as totalConsumption
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId in ( :storeId )
+		</#if>
+		<#if date !=''>
+			and date_format(ru.reportDate,'%Y-%m-%d') = :date
+		</#if>
+		
+	]]>
+</sql>
+<sql id="findAllSumByTime">
+	<![CDATA[
+		select sum(ru.userNum) as userNum,sum(ru.recharge) recharge,
+			sum(ru.consumption)as consumption,sum(ru.totalBalance)as totalBalance,sum(ru.totalPoint)as totalPoint,
+			sum(ru.totalUserNum) as totalUserNum,sum(ru.totalRecharge) as totalRecharge,sum(ru.totalConsumption) as totalConsumption
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId in ( :storeId )
+		</#if>
+		<#if beginTime !=''>
+			and ru.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and ru.reportDate <= :endTime
+		</#if>
+		
+	]]>
+</sql>
+<sql id="findTotolSumByTime">
+	<![CDATA[
+		select sum(ru.totalBalance)as totalBalance,sum(ru.totalPoint)as totalPoint
+			
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId in ( :storeId )
+		</#if>
+		
+		<#if endTime !=''>
+			and date_format(ru.reportDate,'%Y-%m-%d') = :endTime
+		</#if>
+		
+	]]>
+</sql>
+<sql id="findStoreSum">
+	<![CDATA[
+		select ru.userNum,ru.totalBalance,ru.totalPoint,ru.recharge,ru.consumption,
+			ru.totalUserNum,ru.totalRecharge,ru.totalConsumption
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId =:storeId
+		</#if>
+		<#if date !=''>
+			and date_format(ru.reportDate,'%Y-%m-%d') = :date
+		</#if>
+		
+	]]>
+</sql>
+<sql id="findStoreSumByTime">
+	<![CDATA[
+		select sum(ru.userNum) as userNum,sum(ru.recharge) recharge,
+			sum(ru.consumption)as consumption,sum(ru.totalBalance)as totalBalance,sum(ru.totalPoint)as totalPoint,
+			sum(ru.totalUserNum) as totalUserNum,sum(ru.totalRecharge) as totalRecharge,sum(ru.totalConsumption) as totalConsumption
+		
+		from t_report_user ru where 1 = 1
+		
+		<#if storeId ??>
+			and ru.storeId =:storeId
+		</#if>
+		<#if beginTime !=''>
+			and ru.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and ru.reportDate <= :endTime
+		</#if>
+	]]>
+</sql>
+<sql id="findStoreMunSum">
+	<![CDATA[
+		select count(1) as storeSum from (select storeId from t_report_user where 1 = 1
+		<#if storeId ??>
+			and storeId in ( :storeId )
+		</#if>
+		<#if beginTime !=''>
+			and reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and reportDate <= :endTime
+		</#if>
+		GROUP BY storeId)a
+		
+	]]>
+</sql>
+<sql id="findUserCardSumByCreatedTime">
+	<![CDATA[
+		select count(1) as userNum,sum(balance) as totalBalance,sum(point) as totalPoint from t_user_card uc  where 1 = 1
+		<#if storeId ??>
+			and storeId in ( :storeId )
+		</#if>
+		<#if createdTime !=''>
+			and date_format(uc.createdTime, '%Y-%m-%d') = :createdTime
+		</#if>
+	]]>
+</sql>
+<sql id="findAmountSumByCreatedTime">
+	<![CDATA[
+		select sum(actualAmount)   from t_user_card_record ucr  where 1 = 1
+		<#if storeId ??>
+			and ucr.storeId in ( :storeId )
+		</#if>
+		<#if type ??>
+			and ucr.type in (:type,7)
+		</#if>
+		<#if createdTime !=''>
+			and date_format(ucr.createdTime, '%Y-%m-%d') = :createdTime
+		</#if>
+	]]>
+</sql>
+<sql id="findByCreatedTime">
+	<![CDATA[
+		select *   from t_user_card_record ucr  where 1 = 1
+		<#if storeId ??>
+			and ucr.storeId in ( :storeId )
+		</#if>
+		<#if type ??>
+			and ucr.type =:type
+		</#if>
+		<#if createdTime !=''>
+			and date_format(ucr.createdTime, '%Y-%m-%d') = :createdTime
+		</#if>
+	]]>
+</sql>
+<sql id="findByOrderId">
+	<![CDATA[
+		select *   from t_order o  where 1 = 1
+		<#if orderId ??>
+			and o.id =:orderId
+		</#if>
+		
+	]]>
+</sql>
+<sql id="findByReportDate">
+	<![CDATA[
+		select *   from t_report_user ru where 1 = 1
+		<#if storeId ??>
+			and ru.storeId in ( :storeId )
+		</#if>
+		<#if reportDate !=''>
+			and date_format(ru.reportDate, '%Y-%m-%d') = :reportDate
+		</#if>
+		
+	]]>
+</sql>
+</root>

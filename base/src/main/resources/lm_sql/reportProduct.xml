@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<sql id="findTotal">
+	<![CDATA[
+	select count(a.salesNum) from
+	(select 
+		<#if type ==0>
+			rp.stockId,rp.stockName, 
+		</#if>
+		 <#if type ==1>
+			rp.categoryId,rp.categoryName,
+		</#if>
+		<#if type ==2>
+			rp.brandId,rp.brandName,
+		</#if>
+		sum(rp.salesNum) as salesNum  from t_report_product rp where 1=1
+		<#if storeId ??>
+			and rp.storeId in ( :storeId )
+		</#if>
+		<#if name ??>
+			<#if type ==0>
+				and rp.stockName like :name
+			</#if>
+		 	<#if type ==1>
+		 		and rp.categoryName like :name
+			</#if>
+			<#if type ==2>
+				and rp.brandName like :name 
+			</#if>
+		</#if>
+		<#if type ==2>
+			and rp.brandId is not null 
+		</#if>
+		<#if source ??>
+			and rp.source = :source
+		</#if>
+		<#if beginTime !=''>
+			and rp.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and rp.reportDate <= :endTime
+		</#if>
+		<#if type ==0>
+			group by rp.stockId 
+		</#if>
+		 <#if type ==1>
+			group by rp.categoryId 
+		</#if>
+		<#if type ==2>
+			group by rp.brandId 
+		</#if>
+		)a
+	]]>
+</sql>
+<sql id="findAllPage">
+	<![CDATA[
+		
+		select 
+		<#if type ==0>
+			rp.stockId,rp.stockName,rp.costPrice,rp.price,rp.categoryId,rp.categoryName,rp.brandId,rp.brandName,
+		</#if>
+		 <#if type ==1>
+			rp.categoryId,rp.categoryName,
+		</#if>
+		<#if type ==2>
+			rp.brandId,rp.brandName,
+		</#if>
+		sum(rp.salesNum) as salesNum, 
+		sum(rp.costPrice*rp.salesNum) as totalCostPrice,sum(rp.price*rp.salesNum) as TotalPrice,
+		sum(rp.actualPrice) as actualPrice,(sum(rp.price*rp.salesNum)-sum(rp.costPrice*rp.salesNum)) as totalGrossProfit,
+		(select name from t_store s where s.id=rp.storeId) as storeName,rp.barCode,rp.storeId
+		 from t_report_product rp where 1=1
+		<#if storeId ??>
+			and rp.storeId in ( :storeId )
+		</#if>
+		<#if name ??>
+			<#if type ==0>
+				and rp.stockName like :name
+			</#if>
+		 	<#if type ==1>
+		 		and rp.categoryName like :name
+			</#if>
+			<#if type ==2>
+				and rp.brandName like :name 
+			</#if>
+		</#if>
+		<#if source ??>
+			and rp.source = :source
+		</#if>
+		<#if type ==2>
+			and rp.brandId is not null 
+		</#if>
+		<#if beginTime !=''>
+			and rp.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and rp.reportDate <= :endTime
+		</#if>
+		<#if type ==0>
+			group by rp.stockId 
+		</#if>
+		 <#if type ==1>
+			group by rp.categoryId 
+		</#if>
+		<#if type ==2>
+			group by rp.brandId 
+		</#if>
+		<#if sort ==1>
+			order by sum(rp.salesNum) 
+		</#if>
+		<#if sort ==2>
+			order by sum(rp.salesNum) desc
+		</#if>
+		<#if sort ==3>
+			order by rp.costPrice 
+		</#if>
+		<#if sort ==4>
+			order by rp.costPrice desc
+		</#if>
+		<#if sort ==5>
+			order by rp.price
+		</#if>
+		<#if sort ==6>
+			order by rp.price desc
+		</#if>
+		<#if sort ==7>
+			order by sum(rp.costPrice*rp.salesNum)
+		</#if>
+		<#if sort ==8>
+			order by sum(rp.costPrice*rp.salesNum) desc
+		</#if>
+		<#if sort ==9>
+			order by sum(rp.price*rp.salesNum) 
+		</#if>
+		<#if sort ==10>
+			order by sum(rp.price*rp.salesNum) desc
+		</#if>
+		<#if sort ==11>
+			order by (sum(rp.price*rp.salesNum)-sum(rp.costPrice*rp.salesNum)) 
+		</#if>
+		<#if sort ==12>
+			order by (sum(rp.price*rp.salesNum)-sum(rp.costPrice*rp.salesNum)) desc
+		</#if>
+		  limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+
+<sql id="findAll">
+	<![CDATA[
+		select 
+		<#if type ==0>
+			rp.stockId,rp.stockName,rp.costPrice,rp.price,rp.categoryId,rp.categoryName,rp.brandId,rp.brandName,
+		</#if>
+		 <#if type ==1>
+			rp.categoryId,rp.categoryName,
+		</#if>
+		<#if type ==2>
+			rp.brandId,rp.brandName,
+		</#if>
+		sum(rp.salesNum) as salesNum, 
+		sum(rp.costPrice*rp.salesNum) as totalCostPrice,sum(rp.price*rp.salesNum) as TotalPrice,
+		sum(rp.actualPrice) as actualPrice,(sum(rp.price*rp.salesNum)-sum(rp.costPrice*rp.salesNum)) as totalGrossProfit,
+		(select name from t_store s where s.id=rp.storeId) as storeName,rp.barCode,rp.storeId
+		 from t_report_product rp where 1=1
+		<#if storeId ??>
+			and rp.storeId in ( :storeId )
+		</#if>
+		<#if name ??>
+			<#if type ==0>
+				and rp.stockName like :name
+			</#if>
+		 	<#if type ==1>
+		 		and rp.categoryName like :name
+			</#if>
+			<#if type ==2>
+				and rp.brandName like :name 
+			</#if>
+		</#if>
+		<#if source ??>
+			and rp.source = :source
+		</#if>
+		<#if type ==2>
+			and rp.brandId is not null 
+		</#if>
+		<#if beginTime !=''>
+			and rp.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and rp.reportDate <= :endTime
+		</#if>
+		<#if type ==0>
+			group by rp.stockId 
+		</#if>
+		 <#if type ==1>
+			group by rp.categoryId 
+		</#if>
+		<#if type ==2>
+			group by rp.brandId 
+		</#if>
+		<#if sort ==1>
+			order by sum(rp.salesNum) 
+		</#if>
+		<#if sort ==2>
+			order by sum(rp.salesNum) desc
+		</#if>
+		<#if sort ==3>
+			order by rp.costPrice 
+		</#if>
+		<#if sort ==4>
+			order by rp.costPrice desc
+		</#if>
+		<#if sort ==5>
+			order by rp.price
+		</#if>
+		<#if sort ==6>
+			order by rp.price desc
+		</#if>
+		<#if sort ==7>
+			order by sum(rp.costPrice*rp.salesNum)
+		</#if>
+		<#if sort ==8>
+			order by sum(rp.costPrice*rp.salesNum) desc
+		</#if>
+		<#if sort ==9>
+			order by sum(rp.price*rp.salesNum) 
+		</#if>
+		<#if sort ==10>
+			order by sum(rp.price*rp.salesNum) desc
+		</#if>
+		<#if sort ==11>
+			order by (sum(rp.price*rp.salesNum)-sum(rp.costPrice*rp.salesNum)) 
+		</#if>
+		<#if sort ==12>
+			order by (sum(rp.price*rp.salesNum)-sum(rp.costPrice*rp.salesNum)) desc
+		</#if>
+		
+	]]>
+</sql>
+
+<sql id="findAllSum">
+	<![CDATA[
+		select SUM(salesNum) as salesNum,
+		SUM(costPrice*salesNum) as totalCostPrice,
+		sum(price*salesNum) as totalPrice,(sum(price*salesNum)-sum(costPrice*salesNum)) as totalGrossProfit 
+		from t_report_product rp where 1 = 1
+		<#if storeId ??>
+			and rp.storeId in ( :storeId )
+		</#if>
+		<#if name ??>
+			<#if type ==0>
+				and rp.stockName like :name
+			</#if>
+		 	<#if type ==1>
+		 		and rp.categoryName like :name
+			</#if>
+			<#if type ==2>
+				and rp.brandName like :name 
+			</#if>
+		</#if>
+		<#if type ==2>
+			and rp.brandId is not null 
+		</#if>
+		<#if source ??>
+			and rp.source = :source
+		</#if>
+		<#if beginTime !=''>
+			and rp.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and rp.reportDate <= :endTime
+		</#if>
+		
+	]]>
+</sql>
+
+
+<sql id="findDateSum">
+	<![CDATA[
+	 select <#if dNum ??>
+				round(sum((case when c.adate='00' then c.orderSum else 0 end)),2) as d0,
+				round(sum((case when c.adate='01' then c.orderSum else 0 end)),2) as d1, 
+				round(sum((case when c.adate='02' then c.orderSum else 0 end)),2) as d2,
+				round(sum((case when c.adate='03' then c.orderSum else 0 end)),2) as d3,
+				round(sum((case when c.adate='04' then c.orderSum else 0 end)),2) as d4,
+				round(sum((case when c.adate='05' then c.orderSum else 0 end)),2) as d5,
+				round(sum((case when c.adate='06' then c.orderSum else 0 end)),2) as d6,
+				round(sum((case when c.adate='07' then c.orderSum else 0 end)),2) as d7,
+				round(sum((case when c.adate='08' then c.orderSum else 0 end)),2) as d8,
+				round(sum((case when c.adate='09' then c.orderSum else 0 end)),2) as d9,
+				round(sum((case when c.adate='10' then c.orderSum else 0 end)),2) as d10,
+				round(sum((case when c.adate='11' then c.orderSum else 0 end)),2) as d11,
+				round(sum((case when c.adate='12' then c.orderSum else 0 end)),2) as d12,
+				round(sum((case when c.adate='13' then c.orderSum else 0 end)),2) as d13,
+				round(sum((case when c.adate='14' then c.orderSum else 0 end)),2) as d14,
+				round(sum((case when c.adate='15' then c.orderSum else 0 end)),2) as d15,
+				round(sum((case when c.adate='16' then c.orderSum else 0 end)),2) as d16,
+				round(sum((case when c.adate='17' then c.orderSum else 0 end)),2) as d17,
+				round(sum((case when c.adate='18' then c.orderSum else 0 end)),2) as d18,
+				round(sum((case when c.adate='19' then c.orderSum else 0 end)),2) as d19,
+				round(sum((case when c.adate='20' then c.orderSum else 0 end)),2) as d20,
+				round(sum((case when c.adate='21' then c.orderSum else 0 end)),2) as d21,
+				round(sum((case when c.adate='22' then c.orderSum else 0 end)),2) as d22,
+				round(sum((case when c.adate='23' then c.orderSum else 0 end)),2) as d23
+			<#else>
+				sum((case when c.adate='00' then c.orderSum else 0 end)) as d0,
+				sum((case when c.adate='01' then c.orderSum else 0 end)) as d1, 
+				sum((case when c.adate='02' then c.orderSum else 0 end)) as d2,
+				sum((case when c.adate='03' then c.orderSum else 0 end)) as d3,
+				sum((case when c.adate='04' then c.orderSum else 0 end)) as d4,
+				sum((case when c.adate='05' then c.orderSum else 0 end)) as d5,
+				sum((case when c.adate='06' then c.orderSum else 0 end)) as d6,
+				sum((case when c.adate='07' then c.orderSum else 0 end)) as d7,
+				sum((case when c.adate='08' then c.orderSum else 0 end)) as d8,
+				sum((case when c.adate='09' then c.orderSum else 0 end)) as d9,
+				sum((case when c.adate='10' then c.orderSum else 0 end)) as d10,
+				sum((case when c.adate='11' then c.orderSum else 0 end)) as d11,
+				sum((case when c.adate='12' then c.orderSum else 0 end)) as d12,
+				sum((case when c.adate='13' then c.orderSum else 0 end)) as d13,
+				sum((case when c.adate='14' then c.orderSum else 0 end)) as d14,
+				sum((case when c.adate='15' then c.orderSum else 0 end)) as d15,
+				sum((case when c.adate='16' then c.orderSum else 0 end)) as d16,
+				sum((case when c.adate='17' then c.orderSum else 0 end)) as d17,
+				sum((case when c.adate='18' then c.orderSum else 0 end)) as d18,
+				sum((case when c.adate='19' then c.orderSum else 0 end)) as d19,
+				sum((case when c.adate='20' then c.orderSum else 0 end)) as d20,
+				sum((case when c.adate='21' then c.orderSum else 0 end)) as d21,
+				sum((case when c.adate='22' then c.orderSum else 0 end)) as d22,
+				sum((case when c.adate='23' then c.orderSum else 0 end)) as d23
+			</#if>
+	 		
+			from (
+					SELECT b.adate,
+					<#if analysisType ??>
+						<#if analysisType==2>
+							sum(b.salesNum) as orderSum 
+						<#else>
+							<#if dNum ??>
+								SUM(b.price*b.salesNum)/${dNum} as orderSum
+							<#else>
+								SUM(b.price*b.salesNum) as orderSum 
+							</#if>
+						</#if>
+						
+						
+					<#else>
+						<#if dNum ??>
+							  count(DISTINCT b.orderId)/${dNum}  as orderSum
+						<#else>
+							count(DISTINCT b.orderId) as orderSum 
+						</#if>
+					</#if>
+					FROM (
+						SELECT DATE_FORMAT(a.reportDate,'%H') adate,a.* FROM t_report_product a WHERE 1=1
+			 				
+			 				and a.reportDate>=:dateBeginTime AND a.reportDate<=:dateEndTime
+							<#if storeId ??>
+								and a.storeId in ( :storeId )
+							</#if>
+							<#if stockId ??>
+								and a.stockId = :stockId
+							</#if>
+							<#if source ??>
+								and a.source = :source
+							</#if>
+					)b GROUP BY 
+						<#if analysisType ??>
+						
+						<#else>
+							b.orderId,
+						</#if>
+					b.adate)c
+		
+		
+	]]>
+</sql>
+<sql id="findMonthSum">
+	<![CDATA[
+	 select 
+			round(sum((case when c.adate='01' then c.orderSum else 0 end)),2) as m1, 
+			round(sum((case when c.adate='02' then c.orderSum else 0 end)),2) as m2,
+			round(sum((case when c.adate='03' then c.orderSum else 0 end)),2) as m3,
+			round(sum((case when c.adate='04' then c.orderSum else 0 end)),2) as m4,
+			round(sum((case when c.adate='05' then c.orderSum else 0 end)),2) as m5,
+			round(sum((case when c.adate='06' then c.orderSum else 0 end)),2) as m6,
+			round(sum((case when c.adate='07' then c.orderSum else 0 end)),2) as m7,
+			round(sum((case when c.adate='08' then c.orderSum else 0 end)),2) as m8,
+			round(sum((case when c.adate='09' then c.orderSum else 0 end)),2) as m9,
+			round(sum((case when c.adate='10' then c.orderSum else 0 end)),2) as m10,
+			round(sum((case when c.adate='11' then c.orderSum else 0 end)),2) as m11,
+			round(sum((case when c.adate='12' then c.orderSum else 0 end)),2) as m12,
+			round(sum((case when c.adate='13' then c.orderSum else 0 end)),2) as m13,
+			round(sum((case when c.adate='14' then c.orderSum else 0 end)),2) as m14,
+			round(sum((case when c.adate='15' then c.orderSum else 0 end)),2) as m15,
+			round(sum((case when c.adate='16' then c.orderSum else 0 end)),2) as m16,
+			round(sum((case when c.adate='17' then c.orderSum else 0 end)),2) as m17,
+			round(sum((case when c.adate='18' then c.orderSum else 0 end)),2) as m18,
+			round(sum((case when c.adate='19' then c.orderSum else 0 end)),2) as m19,
+			round(sum((case when c.adate='20' then c.orderSum else 0 end)),2) as m20,
+			round(sum((case when c.adate='21' then c.orderSum else 0 end)),2) as m21,
+			round(sum((case when c.adate='22' then c.orderSum else 0 end)),2) as m22,
+			round(sum((case when c.adate='23' then c.orderSum else 0 end)),2) as m23,
+			round(sum((case when c.adate='24' then c.orderSum else 0 end)),2) as m24,
+			round(sum((case when c.adate='25' then c.orderSum else 0 end)),2) as m25,
+			round(sum((case when c.adate='26' then c.orderSum else 0 end)),2) as m26,
+			round(sum((case when c.adate='27' then c.orderSum else 0 end)),2) as m27,
+			round(sum((case when c.adate='28' then c.orderSum else 0 end)),2) as m28,
+			round(sum((case when c.adate='29' then c.orderSum else 0 end)),2) as m29,
+			round(sum((case when c.adate='30' then c.orderSum else 0 end)),2) as m30,
+			round(sum((case when c.adate='31' then c.orderSum else 0 end)),2) as m31
+			from (
+					SELECT b.adate,
+					<#if analysisType ??>
+						<#if analysisType==2>
+							sum(b.salesNum) as orderSum 
+						<#else>
+							<#if dNum ??>
+								SUM(b.price*b.salesNum)/${dNum} as orderSum
+							<#else>
+								SUM(b.price*b.salesNum) as orderSum 
+							</#if>
+						</#if>
+						
+					<#else>
+						<#if mNum ??>
+							  count(DISTINCT b.orderId)/${mNum}  as orderSum
+						<#else>
+							count(DISTINCT b.orderId) as orderSum 
+						</#if>
+					</#if>
+					FROM (
+						SELECT DATE_FORMAT(a.reportDate,'%d') adate,a.* FROM t_report_product a WHERE 1=1
+			 				
+			 				and a.reportDate>=:monthBeginTime AND a.reportDate<=:monthEndTime
+							<#if storeId ??>
+								and a.storeId in ( :storeId )
+							</#if>
+							<#if stockId ??>
+								and a.stockId = :stockId
+							</#if>
+							<#if source ??>
+								and a.source = :source
+							</#if>
+					)b GROUP BY 
+					<#if analysisType ??>
+							
+						<#else>
+							b.orderId,
+						</#if>
+					b.adate)c
+		
+		
+	]]>
+</sql>
+<sql id="findYearSum">
+	<![CDATA[
+	 select 
+			round(sum((case when c.adate='01' then c.orderSum else 0 end)),2) as y1, 
+			round(sum((case when c.adate='02' then c.orderSum else 0 end)),2) as y2,
+			round(sum((case when c.adate='03' then c.orderSum else 0 end)),2) as y3,
+			round(sum((case when c.adate='04' then c.orderSum else 0 end)),2) as y4,
+			round(sum((case when c.adate='05' then c.orderSum else 0 end)),2) as y5,
+			round(sum((case when c.adate='06' then c.orderSum else 0 end)),2) as y6,
+			round(sum((case when c.adate='07' then c.orderSum else 0 end)),2) as y7,
+			round(sum((case when c.adate='08' then c.orderSum else 0 end)),2) as y8,
+			round(sum((case when c.adate='09' then c.orderSum else 0 end)),2) as y9,
+			round(sum((case when c.adate='10' then c.orderSum else 0 end)),2) as y10,
+			round(sum((case when c.adate='11' then c.orderSum else 0 end)),2) as y11,
+			round(sum((case when c.adate='12' then c.orderSum else 0 end)),2) as y12
+			from (
+					SELECT b.adate,
+					<#if analysisType ??>
+						<#if analysisType==2>
+							sum(b.salesNum) as orderSum 
+						<#else>
+							<#if dNum ??>
+								SUM(b.price*b.salesNum)/${dNum} as orderSum
+							<#else>
+								SUM(b.price*b.salesNum) as orderSum 
+							</#if>
+						</#if>
+						
+					<#else>
+						<#if yNum ??>
+							  count(DISTINCT b.orderId)/${yNum}  as orderSum
+						<#else>
+							count(DISTINCT b.orderId) as orderSum 
+						</#if>
+					</#if>
+					FROM (
+						SELECT DATE_FORMAT(a.reportDate,'%m') adate,a.* FROM t_report_product a WHERE 1=1
+			 				
+			 				and a.reportDate>=:yearBeginTime AND a.reportDate<=:yearEndTime
+							<#if storeId ??>
+								and a.storeId in ( :storeId )
+							</#if>
+							<#if stockId ??>
+								and a.stockId = :stockId
+							</#if>
+							<#if source ??>
+								and a.source = :source
+							</#if>
+					)b GROUP BY 
+					<#if analysisType ??>
+					
+						<#else>
+							b.orderId,
+						</#if>
+					b.adate)c
+		
+		
+	]]>
+</sql>
+
+<sql id="findStoreMunSum">
+	<![CDATA[
+		select count(1) as storeSum from (
+		select  distinct storeId from t_report_product rp where 1 = 1
+		<#if storeId ??>
+			and rp.storeId in ( :storeId )
+		</#if>
+		<#if name ??>
+			<#if type ==0>
+				and rp.stockName like :name
+			</#if>
+		 	<#if type ==1>
+		 		and rp.categoryName like :name
+			</#if>
+			<#if type ==2>
+				and rp.brandName like :name 
+			</#if>
+		</#if>
+		<#if type ==2>
+			and rp.brandId is not null 
+		</#if>
+		<#if source ??>
+			and rp.source = :source
+		</#if>
+		<#if beginTime !=''>
+			and rp.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and rp.reportDate <= :endTime
+		</#if>
+		group by rp.storeId)a
+		
+	]]>
+</sql>
+<sql id="findStockMunSum">
+	<![CDATA[
+		select count(1) as stockSum   from (
+		select *
+		from t_report_product  rp where 1 = 1
+		<#if storeId ??>
+			and rp.storeId in ( :storeId )
+		</#if>
+		<#if name ??>
+			<#if type ==0>
+				and rp.stockName like :name
+			</#if>
+		 	<#if type ==1>
+		 		and rp.categoryName like :name
+			</#if>
+			<#if type ==2>
+				and rp.brandName like :name 
+			</#if>
+		</#if>
+		<#if type ==2>
+			and rp.brandId is not null 
+		</#if>
+		<#if source ??>
+			and rp.source = :source
+		</#if>
+		<#if beginTime !=''>
+			and rp.reportDate >= :beginTime
+		</#if>
+		<#if endTime !=''>
+			and rp.reportDate <= :endTime
+		</#if>
+		group by rp.stockId
+		)a
+		
+	]]>
+</sql>
+
+<sql id="findAppMonth">
+	<![CDATA[
+	
+		SELECT b.adate,
+		<#if analysisType ??>
+			SUM(b.price*b.salesNum) as orderSum 
+		<#else>
+			count(DISTINCT b.orderId) as orderSum 
+		</#if>
+		FROM (
+			SELECT DATE_FORMAT(a.reportDate,'%Y-%m-%d') adate,a.* FROM t_report_product a WHERE 1=1
+ 				
+ 				and a.reportDate>=:monthBeginTime AND a.reportDate<=:monthEndTime
+				<#if storeId ??>
+					and a.storeId in ( :storeId )
+				</#if>
+				
+		)b GROUP BY 
+		<#if analysisType ??>
+				
+			<#else>
+				b.orderId,
+			</#if>
+		b.adate
+		
+		
+	]]>
+</sql>
+</root>

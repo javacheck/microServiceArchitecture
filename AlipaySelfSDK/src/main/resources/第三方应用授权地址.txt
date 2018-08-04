@@ -1,0 +1,3 @@
+https://openauth.alipay.com/oauth2/appToAppAuth.htm?app_id=2016082201782495&redirect_uri=http://192.168.82.24:8006/admin/alipayDirectUrl/auth
+app_id存放的是当前APP的ID
+redirect_url是授权后回调的地址，只要把IP地址和端口改了就行。后面的链接方法不需要改

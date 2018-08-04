@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<sql id="findTotal">
+	<![CDATA[
+	select count(1) from t_supplier where 1=1
+		<#if storeId ??>
+			and storeId = :storeId
+		</#if>
+		<#if name !=''>
+			and name like :name
+		</#if>
+		<#if phone !=''>
+			and phone = :phone
+		</#if>
+	]]>
+</sql>
+<sql id="findAllPage">
+	<![CDATA[
+		
+		select * from t_supplier where 1=1
+		<#if storeId ??>
+			and storeId = :storeId
+		</#if>
+		<#if name !=''>
+			and name like :name
+		</#if>
+		<#if phone !=''>
+			and phone = :phone
+		</#if>
+		  limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+<sql id="findSupplier">
+	<![CDATA[
+	
+	select * from t_supplier where 1 = 1
+	<#if id ??>
+			and id != :id
+	</#if>
+	<#if storeId ??>
+		and storeId = :storeId
+	</#if>
+	<#if name !=''>
+			and name = :name
+	</#if>
+	]]>
+</sql>
+
+<sql id="updateSupplier">
+	<![CDATA[
+	update t_supplier set name = :name,contacts =:contacts,phone=:phone,address=:address,memo=:memo where id = :id
+	]]>
+</sql>
+
+<sql id="findById">
+	<![CDATA[
+	
+		select * from t_supplier where id = :id
+	
+	]]>
+</sql>
+</root>

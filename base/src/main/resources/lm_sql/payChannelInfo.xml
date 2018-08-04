@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<sql id="findTotal">
+	<![CDATA[
+	select count(1) from t_pay_channel_info where 1=1
+		<#if storeId ??>
+			and storeId = :storeId
+		</#if>
+		<#if type ??>
+			and type = :type
+		</#if>
+	]]>
+</sql>
+<sql id="findAllPage">
+	<![CDATA[
+		
+		select p.*,(select name from t_store s where s.id=p.storeId) as storeName from t_pay_channel_info p where 1=1
+		<#if storeId ??>
+			and p.storeId = :storeId
+		</#if>
+		<#if type ??>
+			and p.type = :type
+		</#if>
+		  limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+<sql id="findPayChannelInfo">
+	<![CDATA[
+	
+	select * from t_pay_channel_info where 1 = 1
+	<#if id ??>
+			and id != :id
+	</#if>
+	<#if storeId ??>
+		and storeId = :storeId
+	</#if>
+	<#if type ??>
+		and type = :type
+	</#if>
+	<#if appId !=''>
+		and appId = :appId
+	</#if>
+	<#if appKey !=''>
+		and appKey = :appKey
+	</#if>
+	]]>
+</sql>
+
+<sql id="updatePayChannelInfo">
+	<![CDATA[
+	update t_pay_channel_info set storeId = :storeId,type = :type,appId = :appId,appKey = :appKey ,certPassword = :certPassword ,certLocalPath = :certLocalPath ,subMchID = :subMchID ,mchID = :mchID
+	
+	<#if certIo ??>
+	,certIo= :certIo 
+	</#if>
+	
+	where id = :id
+	]]>
+</sql>
+
+
+<sql id="findById">
+	<![CDATA[
+		select p.*,(select name from t_store s where s.id=p.storeId) as storeName from t_pay_channel_info p where p.id = :id
+	]]>
+</sql>
+
+<sql id="findbyStoreIdAndType">
+	<![CDATA[
+		select p.*  from t_pay_channel_info p where p.type = :type and p.storeId = :storeId
+	]]>
+</sql>
+
+</root>

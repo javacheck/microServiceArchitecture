@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<sql id="findReportSalesSum">
+	<![CDATA[
+		select SUM(orderNum) as orderNumSum,SUM(salesNum) as salesNumSum,(SUM(salesNum)-SUM(costPrice)) as grossProfit from t_report_sales  where 1 = 1
+		<#if storeId ??>
+			and storeId in ( :storeId )
+		</#if>
+		<#if source ??>
+			and source = :source
+		</#if>
+		<#if type ==0>
+			and date_format(reportDate,'%Y-%m-%d') = :date
+		</#if>
+		 <#if type ==1>
+			and date_format(reportDate,'%Y-%m') = :date
+		</#if>
+		<#if type ==2>
+			and date_format(reportDate,'%Y-%m') = :date
+		</#if>
+		<#if type ==3>
+			and date_format(reportDate,'%Y') = :date
+		</#if>
+		
+	]]>
+</sql>
+
+<sql id="findReportUserSum">
+	<![CDATA[
+		select sum(userNum) as totalUserNumSum,sum(recharge) as rechargeSum,sum(consumption) as consumptionSum  from t_report_user where 1=1
+		<#if storeId ??>
+			and storeId in ( :storeId )
+		</#if>
+		<#if type ==0>
+			and date_format(reportDate,'%Y-%m-%d') = :date
+		</#if>
+		 <#if type ==1>
+			and date_format(reportDate,'%Y-%m') = :date
+		</#if>
+		<#if type ==2>
+			and date_format(reportDate,'%Y-%m') = :date
+		</#if>
+		<#if type ==3>
+			and date_format(reportDate,'%Y') = :date
+		</#if>
+	]]>
+</sql>
+<sql id="findProductStockSum">
+	<![CDATA[
+		select count(1) as stockSum,sum(costPrice*stock) as costPriceSum,sum(price*stock) as priceSum,(sum(price*stock)-sum(costPrice*stock)) as grossProfit from t_product_stock where 1=1 and stock!=-99
+		<#if storeId ??>
+			and storeId in ( :storeId )
+		</#if>
+	]]>
+</sql>
+</root>

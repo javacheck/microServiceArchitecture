@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+
+<sql id="findTotal">
+	<![CDATA[
+	select count(*) from  t_product_unit pu where 1=1
+		<#if storeId ??>
+			and pu.storeId in ( :storeId )
+		</#if>
+		<#if name != ''>
+			and pu.name like :name
+		</#if>
+	]]>
+</sql>
+<sql id="findAllPage">
+	<![CDATA[
+		
+		select pu.*,(select name from t_store s where s.id=pu.storeId) as storeName
+		 from  t_product_unit pu where 1=1
+		<#if storeId ??>
+			and pu.storeId in ( :storeId )
+		</#if>
+		<#if name != ''>
+			and pu.name like :name
+		</#if>
+		order by pu.id desc
+		  limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+
+<sql id="findProductUnitExist">
+	<![CDATA[
+	select * from t_product_unit where 1=1
+		and name=:name and storeId=:storeId
+		<#if id ??>
+			and id != :id
+		</#if>
+	]]>
+</sql>
+<sql id="findProductUnitById">
+	<![CDATA[
+	select pu.*,(select name from t_store s where s.id=pu.storeId) as storeName from t_product_unit  pu
+		where pu.id = :id
+		
+	]]>
+</sql>
+<sql id="updateProductUnit">
+	<![CDATA[
+	update t_product_unit set 
+		name = :name
+		where id = :id
+		
+	]]>
+</sql>
+
+<sql id="findStockTotal">
+	<![CDATA[
+	select count(*) from  t_product_stock pc where 1=1
+		<#if unitId ??>
+			and pc.unitId = :unitId 
+		</#if>
+		
+	]]>
+</sql>
+</root>

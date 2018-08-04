@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<sql id="findTotal">
+	<![CDATA[
+		select count(*) from  t_stock_check sc where 1 = 1 
+		  	<#if storeId ??>
+			and sc.storeId in ( :storeId )
+			</#if>
+			<#if checkedName != ''>
+				and sc.checkedName like :checkedName
+			</#if>
+			<#if createdTime != ''>
+				and date_format(sc.createdTime,'%Y-%m-%d') = :createdTime
+			</#if>
+			order by sc.id desc 
+			
+		
+	]]>
+</sql>
+
+<sql id="findAllPage">
+	<![CDATA[
+	select a.id,a.createdTime,a.checkedName,a.accountMobile,a.storeName from (
+		select sc.id,sc.createdTime,sc.checkedName,sc.accountId,(select ac.mobile from t_account ac where ac.id=sc.accountId) as accountMobile,sc.storeId,(select s.name from t_store s where s.id=sc.storeId) as storeName from  t_stock_check sc where 1 = 1 
+			  	<#if storeId ??>
+				and sc.storeId in ( :storeId )
+				</#if>
+				<#if checkedName != ''>
+					and sc.checkedName like :checkedName
+				</#if>
+				<#if createdTime != ''>
+					and date_format(sc.createdTime,'%Y-%m-%d') = :createdTime
+				</#if>
+				order by sc.id desc 
+		)a
+		limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+
+<sql id="findAllBySearch">
+	<![CDATA[
+		select ps.id,ps.stock,p.name as productName,ps.attributeName,ps.barCode,ps.productId,ps.alarmValue,
+		(select pc.name from t_product_category pc where pc.id=p.categoryId) as categoryName,
+		(select s.name from t_store s where s.id=ps.storeId) as storeName
+		 from t_product_stock ps left join t_product p on ps.productId=p.id where 1=1 and ps.stock>=0
+			<#if storeId ??>
+				and ps.storeId in ( :storeId )
+			</#if>
+		
+	]]>
+</sql>
+
+<sql id="findDetailTotal">
+	<![CDATA[
+		select count(*) from  t_stock_check_detail scd where 1 = 1 
+		  	<#if stockCheckId ??>
+			and scd.stockCheckId = :stockCheckId 
+			</#if>
+			<#if productName != ''>
+				and scd.productName like :productName
+			</#if>
+			<#if barCode != ''>
+				and scd.barCode = :barCode
+			</#if>
+			
+			
+		
+	]]>
+</sql>
+
+<sql id="findDetailAllPage">
+	<![CDATA[
+	select a.stockCheckId,a.storeId,a.storeName,a.productName,
+			a.barCode,a.categoryName,a.stock,a.checkedStock,a.inventoryProfit,a.inventoryLoss,a.checkedName,a.checkedTime from (
+		select scd.stockCheckId,scd.storeId,(select s.name from t_store s where s.id=scd.storeId) as storeName,
+		scd.productName,scd.barCode,scd.categoryName,scd.stock,scd.checkedStock,
+		scd.inventoryProfit,scd.inventoryLoss,scd.checkedName,scd.checkedTime
+		 from  t_stock_check_detail scd where 1 = 1 
+			<#if stockCheckId ??>
+			and scd.stockCheckId = :stockCheckId 
+			</#if>
+			<#if productName != ''>
+				and scd.productName like :productName
+			</#if>
+			<#if barCode != ''>
+				and scd.barCode = :barCode
+			</#if>
+				<#if sort ==0>
+					order by scd.stock desc
+			</#if>
+		)a
+		<#if sort ==1>
+			order by a.stock 
+		</#if>
+		<#if sort ==2>
+			order by a.stock desc
+		</#if>
+		<#if sort ==3>
+			order by a.checkedStock
+		</#if>
+		<#if sort ==4>
+			order by a.checkedStock desc
+		</#if>
+		<#if sort ==5>
+			order by a.inventoryProfit
+		</#if>
+		<#if sort ==6>
+			order by a.inventoryProfit desc
+		</#if>
+		<#if sort ==7>
+			order by a.inventoryLoss
+		</#if>
+		<#if sort ==8>
+			order by a.inventoryLoss desc
+		</#if>
+		<#if sort ==9>
+			order by a.checkedTime
+		</#if>
+		<#if sort ==10>
+			order by a.checkedTime desc
+		</#if>
+		limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+
+<sql id="findDetailsListAllBySearch">
+	<![CDATA[
+	
+		select scd.stockCheckId,scd.storeId,(select s.name from t_store s where s.id=scd.storeId) as storeName,
+		scd.productName,scd.barCode,scd.categoryName,scd.stock,scd.checkedStock,scd.inventoryProfit,scd.inventoryLoss,scd.checkedName,scd.checkedTime
+		 from  t_stock_check_detail scd where 1 = 1 
+			<#if stockCheckId ??>
+			and scd.stockCheckId = :stockCheckId 
+			</#if>
+			<#if productName != ''>
+				and scd.productName = :productName
+			</#if>
+			<#if barCode != ''>
+				and scd.barCode = :barCode
+			</#if>
+				order by scd.stock desc 
+		
+		
+	]]>
+</sql>
+</root>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+
+<sql id="checkUserLevelDefinitionName">
+	<![CDATA[
+	select count(*) from t_user_level_definition where name = :name
+	<#if id ??>
+		and id <> :id
+	</#if>
+	<#if storeId ??>
+		and storeId = :storeId
+	</#if>
+	]]>
+</sql>
+
+</root>

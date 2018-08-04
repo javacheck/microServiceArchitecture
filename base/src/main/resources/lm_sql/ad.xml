@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<sql id="findTotal">
+	<![CDATA[
+		select count(1) from t_user_screen_ad where 1=1
+		<#if storeId ??>
+			and storeId = :storeId
+		</#if>
+		
+	]]>
+</sql>
+
+<sql id="findAllPage">
+	<![CDATA[
+	select us.* from t_user_screen_ad us  where 1=1
+		
+		<#if storeId ??>
+			and us.storeId = :storeId
+		</#if>
+		
+		order by us.imageId desc
+		limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+
+</root>

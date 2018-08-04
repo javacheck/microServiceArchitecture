@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<sql id="findTotal">
+	<![CDATA[
+		select count(1) from(
+			select ps.*
+			from t_product_stock ps left join t_product p on ps.productId=p.id  where 1 = 1 and ps.stock!=-99
+		
+		<#if storeId ??>
+			and ps.storeId in ( :storeId )
+		</#if>
+		<#if name ??>
+			and ps.attributeName like :name
+		</#if>
+		<#if barCode != ''>
+			and ps.barCode = :barCode
+		</#if>
+		GROUP BY storeId,id)a
+	]]>
+</sql>
+
+<sql id="findAllPage">
+	<![CDATA[
+	select a.name,a.barCode,a.categoryName,a.stock,a.costPrice,a.price,
+	a.totalCostPrice,a.preSales,a.preGrossProfit,a.storeName from(
+		select ps.id,ps.storeId,ps.attributeName as name,ps.barCode,
+		(select name from t_product_category pc where pc.id=p.categoryId) as categoryName,
+		ps.stock,ps.costPrice,ps.price,(ps.costPrice*ps.stock) as totalCostPrice,(ps.price*ps.stock) as preSales, 
+			(ps.price*ps.stock-ps.costPrice*ps.stock) as preGrossProfit,
+			(select name from t_store s where s.id=ps.storeId) as storeName
+		
+		from t_product_stock ps left join t_product p on ps.productId=p.id  where 1 = 1 and ps.stock!=-99
+		
+		<#if storeId ??>
+			and ps.storeId in ( :storeId )
+		</#if>
+		<#if name ??>
+			and ps.attributeName like :name
+		</#if>
+		<#if barCode != ''>
+			and ps.barCode = :barCode
+		</#if>
+		GROUP BY ps.storeId,ps.id)a
+		<#if sort==0>
+			order by a.id desc
+		</#if>
+		<#if sort==1>
+			order by a.stock
+		</#if>
+		<#if sort==2>
+			order by a.stock desc
+		</#if>
+		<#if sort==3>
+			order by a.costPrice
+		</#if>
+		<#if sort==4>
+			order by a.costPrice desc
+		</#if>
+		<#if sort==5>
+			order by a.price
+		</#if>
+		<#if sort==6>
+			order by a.price desc
+		</#if>
+		<#if sort==7>
+			order by a.totalCostPrice
+		</#if>
+		<#if sort==8>
+			order by a.totalCostPrice desc
+		</#if>
+		<#if sort==9>
+			order by a.preSales
+		</#if>
+		<#if sort==10>
+			order by a.preSales desc
+		</#if>
+		<#if sort==11>
+			order by a.preGrossProfit
+		</#if>
+		<#if sort==12>
+			order by a.preGrossProfit desc
+		</#if>
+		 limit :startNumber,:pageSize
+		
+	]]>
+</sql>
+<sql id="findAllSum">
+	<![CDATA[
+		select sum(stock) as stockSum,sum(a.totalCostPrice) as totalCostPriceSum,sum(a.preSales) as preSalesSum,sum(a.preGrossProfit) as preGrossProfitSum from (
+		select ps.id,ps.storeId,ps.stock,(ps.costPrice*ps.stock) as totalCostPrice,(ps.price*ps.stock) as preSales, 
+			(ps.price*ps.stock-ps.costPrice*ps.stock) as preGrossProfit
+		from t_product_stock ps where 1 = 1 and ps.stock!=-99
+		
+		<#if storeId ??>
+			and ps.storeId in ( :storeId )
+		</#if>
+		<#if name ??>
+			and ps.attributeName like :name
+		</#if>
+		<#if barCode != ''>
+			and ps.barCode = :barCode
+		</#if>
+		)a
+	]]>
+</sql>
+
+<sql id="findAll">
+	<![CDATA[
+		select a.name,a.barCode,a.categoryName,a.stock,a.costPrice,a.price,
+	a.totalCostPrice,a.preSales,a.preGrossProfit,a.storeName from(
+		select ps.id,ps.storeId,ps.attributeName as name,ps.barCode,
+		(select name from t_product_category pc where pc.id=p.categoryId) as categoryName,
+		ps.stock,ps.costPrice,ps.price,(ps.costPrice*ps.stock) as totalCostPrice,(ps.price*ps.stock) as preSales, 
+			(ps.price*ps.stock-ps.costPrice*ps.stock) as preGrossProfit,
+			(select name from t_store s where s.id=ps.storeId) as storeName
+		
+		from t_product_stock ps left join t_product p on ps.productId=p.id  where 1 = 1 and ps.stock!=-99
+		
+		<#if storeId ??>
+			and ps.storeId in ( :storeId )
+		</#if>
+		<#if name ??>
+			and ps.attributeName like :name
+		</#if>
+		<#if barCode != ''>
+			and ps.barCode = :barCode
+		</#if>
+		GROUP BY ps.storeId,ps.id)a
+		<#if sort==0>
+			order by a.id desc
+		</#if>
+		<#if sort==1>
+			order by a.stock
+		</#if>
+		<#if sort==2>
+			order by a.stock desc
+		</#if>
+		<#if sort==3>
+			order by a.costPrice
+		</#if>
+		<#if sort==4>
+			order by a.costPrice desc
+		</#if>
+		<#if sort==5>
+			order by a.price
+		</#if>
+		<#if sort==6>
+			order by a.price desc
+		</#if>
+		<#if sort==7>
+			order by a.totalCostPrice
+		</#if>
+		<#if sort==8>
+			order by a.totalCostPrice desc
+		</#if>
+		<#if sort==9>
+			order by a.preSales
+		</#if>
+		<#if sort==10>
+			order by a.preSales desc
+		</#if>
+		<#if sort==11>
+			order by a.preGrossProfit
+		</#if>
+		<#if sort==12>
+			order by a.preGrossProfit desc
+		</#if>
+		
+	]]>
+</sql>
+
+<sql id="findProductSum">
+	<![CDATA[
+		select count(1) as nameSum from t_product_stock where 1 = 1 and stock!=-99
+		<#if storeId ??>
+			and storeId in ( :storeId )
+		</#if>
+		<#if name ??>
+			and attributeName like :name
+		</#if>
+		<#if barCode != ''>
+			and barCode = :barCode
+		</#if>
+	]]>
+</sql>
+</root>

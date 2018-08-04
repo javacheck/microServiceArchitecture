@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+
+<sql id="checkEmployeeName">
+	<![CDATA[
+	select count(*) from t_employee where name = :name
+	<#if id ??>
+		and id <> :id
+	</#if>
+	]]>
+</sql>
+
+</root>
