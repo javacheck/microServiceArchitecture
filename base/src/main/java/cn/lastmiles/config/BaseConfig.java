@@ -2,9 +2,7 @@ package cn.lastmiles.config;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
 import javax.sql.DataSource;
-
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +16,6 @@ import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.transaction.PlatformTransactionManager;
-
 import redis.clients.jedis.JedisPoolConfig;
 import cn.lastmiles.cache.CacheService;
 import cn.lastmiles.cache.RedisCacheService;
@@ -58,19 +55,15 @@ public class BaseConfig  implements SchedulingConfigurer {
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxTotal(ConfigUtils.getInteger("redis.pool.maxTotal"));
 		poolConfig.setMaxIdle(ConfigUtils.getInteger("redis.pool.maxIdle"));
-		poolConfig.setTestOnBorrow(ConfigUtils
-				.getBoolean("redis.pool.testOnBorrow"));
-		poolConfig.setMaxWaitMillis(ConfigUtils
-				.getInteger("redis.pool.maxWait"));
+		poolConfig.setTestOnBorrow(ConfigUtils.getBoolean("redis.pool.testOnBorrow"));
+		poolConfig.setMaxWaitMillis(ConfigUtils.getInteger("redis.pool.maxWait"));
 		return poolConfig;
 	}
 
 	@Bean
 	@Autowired
-	public JedisConnectionFactory jedisConnectionFactory(
-			JedisPoolConfig jedisPoolConfig) {
-		JedisConnectionFactory connectionFactory = new JedisConnectionFactory(
-				jedisPoolConfig);
+	public JedisConnectionFactory jedisConnectionFactory(JedisPoolConfig jedisPoolConfig) {
+		JedisConnectionFactory connectionFactory = new JedisConnectionFactory(jedisPoolConfig);
 		connectionFactory.setHostName(ConfigUtils.getProperty("redis.ip"));
 		connectionFactory.setPort(ConfigUtils.getInteger("redis.port"));
 		connectionFactory.setUsePool(true);
@@ -79,8 +72,7 @@ public class BaseConfig  implements SchedulingConfigurer {
 
 	@Bean
 	@Autowired
-	public RedisTemplate<String, Object> redisTemplate(
-			JedisConnectionFactory connectionFactory) {
+	public RedisTemplate<String, Object> redisTemplate( JedisConnectionFactory connectionFactory) {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
 		redisTemplate.setConnectionFactory(connectionFactory);
 		return redisTemplate;
@@ -119,16 +111,19 @@ public class BaseConfig  implements SchedulingConfigurer {
 
 	@Override
 	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+
 		taskRegistrar.setScheduler(taskExecutor());
 	}
 
 	@Bean(destroyMethod = "shutdown")
 	public Executor taskExecutor() {
+
 		return Executors.newScheduledThreadPool(100);
 	}
 
 	@Bean
 	public FileService fileService() {
+
 		return new UFileService();
 	}
 	

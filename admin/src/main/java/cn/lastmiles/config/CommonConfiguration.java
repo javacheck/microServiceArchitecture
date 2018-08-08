@@ -14,7 +14,9 @@ public class CommonConfiguration {
     @Bean
     public EmbeddedServletContainerFactory embeddedServletContainerFactory() {
         ConfigurableEmbeddedServletContainer factory = new TomcatEmbeddedServletContainerFactory();
-        factory.setDocumentRoot(new File("S:\\JavaWorkSpace\\MySelfProject\\microServiceArchitecture\\admin\\src\\main\\webapp\\"));
+        // factory.setDocumentRoot(new File("S:\\JavaWorkSpace\\MySelfProject\\microServiceArchitecture\\admin\\src\\main\\webapp\\"));
+        factory.setDocumentRoot(new File("S:\\codeSpace\\GitHubProject\\microServiceArchitecture\\admin\\src\\main\\webapp\\"));
+
         return (EmbeddedServletContainerFactory) factory;
     }
 }

@@ -1,42 +1,27 @@
 package cn.lastmiles.config;
 
 import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 import cn.lastmiles.constant.MQTopic;
 import cn.lastmiles.mq.MQReceiverService;
-
 import com.google.code.kaptcha.Producer;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
-
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 
 @Configuration
-//@ComponentScan(basePackages = { "cn.lastmiles" }, excludeFilters = {
-//		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class),
-//		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class) })
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableScheduling
-// @EnableRedisHttpSession
 @Import(BaseConfig.class)
 public class RootConfig {
-	private final static Logger logger = LoggerFactory
-			.getLogger(RootConfig.class);
 
 	/**
 	 * kaptcha.border.color 边框颜色 默认为Color.BLACK kaptcha.border.thickness 边框粗细度
@@ -75,9 +60,7 @@ public class RootConfig {
 	}
 
 	@Bean
-	RedisMessageListenerContainer container(
-			RedisConnectionFactory connectionFactory,
-			MessageListenerAdapter listenerAdapter) {
+	RedisMessageListenerContainer container( RedisConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
 		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		container.addMessageListener(listenerAdapter, new ChannelTopic(MQTopic.USERCARDPOINT));
@@ -87,8 +70,7 @@ public class RootConfig {
 
 	@Bean
 	MessageListenerAdapter listenerAdapter(MQReceiverService receiver,JdkSerializationRedisSerializer serializer) {
-		MessageListenerAdapter adapter = new MessageListenerAdapter(receiver,
-				"receiveMessage");
+		MessageListenerAdapter adapter = new MessageListenerAdapter(receiver,"receiveMessage");
 		adapter.setSerializer(serializer);
 		return adapter;
 	}
