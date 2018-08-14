@@ -1,14 +1,10 @@
-package cn.self.cloud.commonutils;
+package cn.self.cloud.commonutils.password;
 
-/**
- * createDate : 2016年5月16日下午2:35:19
- */
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -33,16 +29,16 @@ public class DESUtil {
 
     /**
      * 功能：构造
-     * @param keyData key
+     * @param key key
      */
     public DESUtil(String key) {
+
         this.keyData = key;
     }
 
     /**
      * 功能：加密 (UTF-8)
      * @param source 源字符串
-     * @param charSet 编码
      * @return String
      * @throws UnsupportedEncodingException 编码异常
      */
@@ -57,8 +53,7 @@ public class DESUtil {
      * @return String
      * @throws UnsupportedEncodingException 编码异常
      */
-    public String decrypt(String encryptedData)
-            throws UnsupportedEncodingException {
+    public String decrypt(String encryptedData) throws UnsupportedEncodingException {
         return decrypt(encryptedData, "UTF-8");
     }
 
@@ -69,8 +64,7 @@ public class DESUtil {
      * @return String
      * @throws UnsupportedEncodingException 编码异常
      */
-    public String encrypt(String source, String charSet)
-            throws UnsupportedEncodingException {
+    public String encrypt(String source, String charSet) throws UnsupportedEncodingException {
         String encrypt = null;
         byte[] ret = encrypt(source.getBytes(charSet));
         encrypt = new String(Base64.encode(ret));
@@ -78,15 +72,13 @@ public class DESUtil {
     }
 
     /**
-     *
      * 功能：解密
      * @param encryptedData 被加密后的字符串
      * @param charSet 编码
      * @return String
      * @throws UnsupportedEncodingException 编码异常
      */
-    public String decrypt(String encryptedData, String charSet)
-            throws UnsupportedEncodingException {
+    public String decrypt(String encryptedData, String charSet) throws UnsupportedEncodingException {
         String descryptedData = null;
         byte[] ret = descrypt(Base64.decode(encryptedData.toCharArray()));
         descryptedData = new String(ret, charSet);

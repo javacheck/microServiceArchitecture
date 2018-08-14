@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 /**
  * 科学计算
+ * 数学运算辅助类
  */
 public final class MathUtil {
 

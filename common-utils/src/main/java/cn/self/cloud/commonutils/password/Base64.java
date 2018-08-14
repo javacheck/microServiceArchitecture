@@ -1,8 +1,5 @@
-package cn.self.cloud.commonutils;
+package cn.self.cloud.commonutils.password;
 
-/**
- * createDate : 2016年5月16日下午2:36:26
- */
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -34,6 +31,7 @@ public class Base64 {
      * @return String
      */
     public static String encode(String data) {
+
         return new String(encode(data.getBytes()));
     }
 
@@ -43,6 +41,7 @@ public class Base64 {
      * @return String
      */
     public static String decode(String data) {
+
         return new String(decode(data.toCharArray()));
     }
 
@@ -129,8 +128,7 @@ public class Base64 {
 
         // if there is STILL something wrong we just have to throw up now!
         if (index != out.length) {
-            throw new Error("Miscalculated data length (wrote " + index
-                    + " instead of " + out.length + ")");
+            throw new Error("Miscalculated data length (wrote " + index  + " instead of " + out.length + ")");
         }
 
         return out;
@@ -143,9 +141,7 @@ public class Base64 {
     public static void encode(File file) throws IOException {
         if (!file.exists()) {
             System.exit(0);
-        }
-
-        else {
+        } else {
             byte[] decoded = readBytes(file);
             char[] encoded = encode(decoded);
             writeChars(file, encoded);
@@ -172,8 +168,7 @@ public class Base64 {
     //
     // code characters for values 0..63
     //
-    private static char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
-            .toCharArray();
+    private static char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".toCharArray();
 
     //
     // lookup table for converting base64 characters to value in range 0..63
@@ -220,12 +215,15 @@ public class Base64 {
 
         } finally {
             try {
-                if (fis != null)
+                if (fis != null){
                     fis.close();
-                if (is != null)
+                }
+                if (is != null){
                     is.close();
-                if (baos != null)
+                }
+                if (baos != null) {
                     baos.close();
+                }
             } catch (Exception e) {
                 System.out.println(e);
             }

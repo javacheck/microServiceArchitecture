@@ -1,4 +1,4 @@
-package cn.self.cloud.commonutils;
+package cn.self.cloud.commonutils.ftp;
 
 /**
  * createDate : 2016年5月16日下午2:27:15
@@ -18,7 +18,7 @@ import org.apache.commons.net.ftp.FTPReply;
  * 用来操作ftp的综合类。<br/>
  * 主要依赖jar包commons-net-3.1.jar。
  */
-public class FtpUtil {
+public class FtpUtils {
     // ftp 地址
     private String url;
     // ftp端口
@@ -36,7 +36,7 @@ public class FtpUtil {
      * @param password 密码
      *
      */
-    public FtpUtil(String url, int port, String userName, String password) {
+    public FtpUtils(String url, int port, String userName, String password) {
         this.url = url;
         this.port = port;
         this.userName = userName;

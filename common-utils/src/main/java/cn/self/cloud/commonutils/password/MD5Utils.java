@@ -1,9 +1,6 @@
-package cn.self.cloud.commonutils;
+package cn.self.cloud.commonutils.password;
 
-/**
- * createDate : 2016年5月16日上午11:56:11
- */
-
+import cn.self.cloud.commonutils.basictype.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,20 +9,18 @@ import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class MD5Util {
+public class MD5Utils {
 
-    protected static char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6',
-            '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+    protected static char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6','7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
     protected static MessageDigest messagedigest = null;
 
     static {
         try {
             messagedigest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException nsaex) {
-            System.err.println(MD5Util.class.getName()
-                    + "初始化失败，MessageDigest不支持MD5Util。");
-            nsaex.printStackTrace();
+        } catch (NoSuchAlgorithmException ex) {
+            System.err.println(MD5Utils.class.getName()+ "初始化失败，MessageDigest不支持MD5Util。");
+            ex.printStackTrace();
         }
     }
 
@@ -39,14 +34,13 @@ public class MD5Util {
         if (password == null) {
             throw new IllegalArgumentException("password不能为null");
         }
-        if (StringUtil.isEmpty(salt)) {
+        if (StringUtils.isBlank(salt)) {
             throw new IllegalArgumentException("salt不能为空");
         }
-        if ((salt.toString().lastIndexOf("{") != -1)
-                || (salt.toString().lastIndexOf("}") != -1)) {
+        if ((salt.lastIndexOf("{") != -1)|| (salt.lastIndexOf("}") != -1)) {
             throw new IllegalArgumentException("salt中不能包含 { 或者 }");
         }
-        return getMD5String(password + "{" + salt.toString() + "}");
+        return getMD5String(password + "{" + salt + "}");
     }
 
     /**
@@ -70,6 +64,7 @@ public class MD5Util {
      * @return String
      */
     public static String getMD5String(String str) {
+
         return getMD5String(str.getBytes());
     }
 
@@ -79,6 +74,7 @@ public class MD5Util {
     }
 
     private static String bufferToHex(byte bytes[]) {
+
         return bufferToHex(bytes, 0, bytes.length);
     }
 

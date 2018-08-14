@@ -1,8 +1,5 @@
-package cn.self.cloud.commonutils;
+package cn.self.cloud.commonutils.file;
 
-/**
- * createDate : 2016年5月16日上午11:57:36
- */
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,8 +19,7 @@ public class FileUtil {
      * @param isOverWrite 是否覆盖(只针对文件)
      * @throws IOException
      */
-    public static void copy(File inputFile, File outputFile, boolean isOverWrite)
-            throws IOException {
+    public static void copy(File inputFile, File outputFile, boolean isOverWrite) throws IOException {
         if (!inputFile.exists()) {
             throw new RuntimeException(inputFile.getPath() + "源目录不存在!");
         }
@@ -37,8 +33,7 @@ public class FileUtil {
      * @param isOverWrite
      * @throws IOException
      */
-    private static void copyPri(File inputFile, File outputFile,
-                                boolean isOverWrite) throws IOException {
+    private static void copyPri(File inputFile, File outputFile, boolean isOverWrite) throws IOException {
         // 是个文件。
         if (inputFile.isFile()) {
             copySimpleFile(inputFile, outputFile, isOverWrite);
@@ -49,9 +44,7 @@ public class FileUtil {
             }
             // 循环子文件夹
             for (File child : inputFile.listFiles()) {
-                copy(child,
-                        new File(outputFile.getPath() + "/" + child.getName()),
-                        isOverWrite);
+                copy(child, new File(outputFile.getPath() + "/" + child.getName()), isOverWrite);
             }
         }
     }
@@ -63,8 +56,7 @@ public class FileUtil {
      * @param isOverWrite 是否允许覆盖
      * @throws IOException
      */
-    private static void copySimpleFile(File inputFile, File outputFile,
-                                       boolean isOverWrite) throws IOException {
+    private static void copySimpleFile(File inputFile, File outputFile, boolean isOverWrite) throws IOException {
         // 目标文件已经存在
         if (outputFile.exists()) {
             if (isOverWrite) {
@@ -92,6 +84,7 @@ public class FileUtil {
      * @param file 文件
      */
     public static void delete(File file) {
+
         deleteFile(file);
     }
 
@@ -123,7 +116,7 @@ public class FileUtil {
 
     /**
      * 从文件路径中抽取文件的扩展名, 例如. "mypath/myfile.txt" -> "txt".
-     * @param 文件路径
+     * @param path 文件路径
      * @return 如果path为null，直接返回null。
      */
     public static String getFilenameExtension(String path) {
@@ -151,8 +144,7 @@ public class FileUtil {
             return null;
         }
         int separatorIndex = path.lastIndexOf(FOLDER_SEPARATOR);
-        return (separatorIndex != -1 ? path.substring(separatorIndex + 1)
-                : path);
+        return (separatorIndex != -1 ? path.substring(separatorIndex + 1) : path);
     }
 
     /**

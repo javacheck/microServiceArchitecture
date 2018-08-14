@@ -1,4 +1,4 @@
-package cn.self.cloud.commonutils;
+package cn.self.cloud.commonutils.jdbc;
 
 /**
  * createDate : 2016年5月16日下午2:33:47
@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.dbcp.ConnectionFactory;
 import org.apache.commons.dbcp.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
