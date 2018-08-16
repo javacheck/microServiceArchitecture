@@ -113,4 +113,11 @@ public final class Page implements Serializable {
         }
         data = data.subList(start, getEnd());
     }
+
+    public static void main(String[] args) {
+        Page page  = new Page();
+        page.setPageNo(2);
+        page.setPageSize(10);
+        System.out.println(page.getStart()+"--->"+page.getEnd());
+    }
 }

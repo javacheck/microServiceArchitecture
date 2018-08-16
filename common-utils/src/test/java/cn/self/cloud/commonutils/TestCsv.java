@@ -1,10 +1,11 @@
-package cn.lastmiles.common;
+package cn.self.cloud.commonutils;
+
+import cn.self.cloud.commonutils.eximport.CSVUtils;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
-import cn.lastmiles.common.utils.CSVUtils;
 
 public class TestCsv {
 	/**

@@ -1,5 +1,6 @@
 package cn.self.cloud.commonutils.jdbc;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
@@ -17,6 +18,7 @@ import cn.self.cloud.commonutils.basictype.StringUtils;
 import cn.self.cloud.commonutils.page.Page;
 import cn.self.cloud.commonutils.reflec.BeanUtils;
 import jodd.io.FileNameUtil;
+import jodd.io.FileUtil;
 import jodd.io.StreamUtil;
 import jodd.io.findfile.ClassScanner;
 import jodd.lagarto.dom.Document;
@@ -47,6 +49,7 @@ public class JdbcUtils {
             // 加载sql
             URL url = ClassLoaderUtil.getResourceUrl("/user_sql");
             if (url != null) {
+                // File containerFile = FileUtil.toContainerFile(url);
                 ClassScanner classScanner = new ClassScanner() {
                     @Override
                     protected void onEntry(EntryData entryData)
@@ -78,6 +81,7 @@ public class JdbcUtils {
                 };
 
                 classScanner.setIncludeResources(true);
+                // classScanner.scan(containerFile);
                 classScanner.scan(url);
             }
         } catch (Exception e) {

@@ -1,14 +1,6 @@
-package cn.lastmiles.common;
+package cn.self.cloud.commonutils;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-
-import jodd.io.FileUtil;
-import cn.lastmiles.common.service.FileService;
-import cn.lastmiles.common.service.SimpleFileService;
-import cn.lastmiles.common.utils.PasswordUtils;
 
 public class Test {
 

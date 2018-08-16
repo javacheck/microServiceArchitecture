@@ -1,10 +1,9 @@
-package cn.lastmiles.common.utils;
+package cn.self.cloud.commonutils.api;
 
+import cn.self.cloud.commonutils.json.JsonUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import cn.lastmiles.bean.MapBean;
 
 public class MapBeanUtil {
 	public static List<MapBean> toMapBean(Map<String, Object> objs){

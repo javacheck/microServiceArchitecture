@@ -17,6 +17,12 @@ public class BarCode4jUtils {
     public static String generateBarcode(Long barcode, File outputFile) {
         Code128Bean bean = new Code128Bean();
         final int dpi = 300;
+        // module宽度
+        //		final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
+
+        // 配置对象
+//		bean.setModuleWidth(moduleWidth);
+//        bean.setWideFactor(3);
 
         // 条码两端是否加空白
         bean.doQuietZone(true);

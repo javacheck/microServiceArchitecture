@@ -173,6 +173,7 @@ public final class StringUtils {
      * @return 随机字符串
      */
     public static String getRandomStr(int count) {
+
         return RandomString.getInstance().randomAlphaNumeric(count);
     }
 

@@ -32,6 +32,10 @@ import java.util.Map;
 public final class HttpUtils {
     private final static Logger logger = LoggerFactory.getLogger(HttpUtils.class);
 
+    public static String post(String url, Map<String, Object> parameters) {
+        return HttpRequest.post(url).form(parameters).send().bodyText();
+    }
+    
     /**
      * Http get请求
      *

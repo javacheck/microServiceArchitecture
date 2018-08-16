@@ -27,7 +27,7 @@ public class MysqlIdService implements IdService {
 
 	@Override
 	public Long getOrderId() {
-		return null;
+		return getId();
 	}
 
 }
