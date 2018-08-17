@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 /**
+ * 由于Java的简单类型不能够精确的对浮点数进行运算，这个工具类提供精 确的浮点数运算，包括加减乘除和四舍五入。
  * 精准数字计算
  * BigDecimal----> JDK的解释：
  * 参数类型为double的构造方法的结果有一定的不可预知性。
@@ -25,13 +26,17 @@ import java.text.DecimalFormat;
  * 将double转换为String。要获取该结果，请使用static valueOf(double)方法。
  * 参考网址：https://blog.csdn.net/lisongjia123/article/details/51232657
  */
-public class NumberUtils {
+public final class NumberUtils {
+
+	// 这个类不能实例化
+	private NumberUtils() {
+	}
 
 	/**
 	 * 功能：两个数字进行相加操作
-	 * @param a String
-	 * @param b String
-	 * @return 和
+	 * @param a String 加数
+	 * @param b String 被加数
+	 * @return 和 两个参数的和
 	 */
 	public static Double add(String a, String b) {
 		BigDecimal bigDecimal1 = new BigDecimal(String.valueOf(a));
@@ -41,9 +46,9 @@ public class NumberUtils {
 
 	/**
 	 * 功能：两个数字进行相加操作
-	 * @param a Double
-	 * @param b Double
-	 * @return 和
+	 * @param a Double 加数
+	 * @param b Double 被加数
+	 * @return 和 两个参数的和
 	 */
 	public static Double add(Double a, Double b) {
 		BigDecimal bigDecimal1 = new BigDecimal(String.valueOf(a));
@@ -102,6 +107,60 @@ public class NumberUtils {
 			}
 		}
 		return result.doubleValue();
+	}
+
+	/**
+	 * 功能：两个数字进行相减操作
+	 * @param a String
+	 * @param b String
+	 * @return 差
+	 */
+	public static Double subtract(String a, String b) {
+		BigDecimal bigDecimal1 = new BigDecimal(String.valueOf(a));
+		BigDecimal bigDecimal2 = new BigDecimal(String.valueOf(b));
+		return bigDecimal1.subtract(bigDecimal2).doubleValue();
+	}
+
+	/**
+	 * 功能：两个数字进行相减操作
+	 * @param a Double
+	 * @param b Double
+	 * @return 差
+	 */
+	public static Double subtract(Double a, Double b) {
+		BigDecimal bigDecimal1 = new BigDecimal(String.valueOf(a));
+		BigDecimal bigDecimal2 = new BigDecimal(String.valueOf(b));
+		return bigDecimal1.subtract(bigDecimal2).doubleValue();
+	}
+
+	/**
+	 * 功能：三个数字进行相减操作
+	 * @param a Double
+	 * @param b Double
+	 * @param c Double
+	 * @return 差
+	 */
+	public static Double subtract(Double a, Double b, Double c) {
+		BigDecimal bigDecimal1 = new BigDecimal(String.valueOf(a));
+		BigDecimal bigDecimal2 = new BigDecimal(String.valueOf(b));
+		BigDecimal bigDecimal3 = new BigDecimal(String.valueOf(c));
+		return bigDecimal1.subtract(bigDecimal2).subtract(bigDecimal3).doubleValue();
+	}
+
+	/**
+	 * 功能：四个数字进行相减操作
+	 * @param a Double
+	 * @param b Double
+	 * @param c Double
+	 * @param d Double
+	 * @return 差
+	 */
+	public static Double subtract(Double a, Double b, Double c, Double d) {
+		BigDecimal bigDecimal1 = new BigDecimal(String.valueOf(a));
+		BigDecimal bigDecimal2 = new BigDecimal(String.valueOf(b));
+		BigDecimal bigDecimal3 = new BigDecimal(String.valueOf(c));
+		BigDecimal bigDecimal4 = new BigDecimal(String.valueOf(d));
+		return bigDecimal1.subtract(bigDecimal2).subtract(bigDecimal3).subtract(bigDecimal4).doubleValue();
 	}
 
 	/**
@@ -183,60 +242,6 @@ public class NumberUtils {
 	}
 
 	/**
-	 * 功能：两个数字进行相减操作
-	 * @param a String
-	 * @param b String
-	 * @return 差
-	 */
-	public static Double subtract(String a, String b) {
-		BigDecimal bigDecimal1 = new BigDecimal(String.valueOf(a));
-		BigDecimal bigDecimal2 = new BigDecimal(String.valueOf(b));
-		return bigDecimal1.subtract(bigDecimal2).doubleValue();
-	}
-
-	/**
-	 * 功能：两个数字进行相减操作
-	 * @param a Double
-	 * @param b Double
-	 * @return 差
-	 */
-	public static Double subtract(Double a, Double b) {
-		BigDecimal bigDecimal1 = new BigDecimal(String.valueOf(a));
-		BigDecimal bigDecimal2 = new BigDecimal(String.valueOf(b));
-		return bigDecimal1.subtract(bigDecimal2).doubleValue();
-	}
-
-	/**
-	 * 功能：三个数字进行相减操作
-	 * @param a Double
-	 * @param b Double
-	 * @param c Double
-	 * @return 差
-	 */
-	public static Double subtract(Double a, Double b, Double c) {
-		BigDecimal bigDecimal1 = new BigDecimal(String.valueOf(a));
-		BigDecimal bigDecimal2 = new BigDecimal(String.valueOf(b));
-		BigDecimal bigDecimal3 = new BigDecimal(String.valueOf(c));
-		return bigDecimal1.subtract(bigDecimal2).subtract(bigDecimal3).doubleValue();
-	}
-
-	/**
-	 * 功能：四个数字进行相减操作
-	 * @param a Double
-	 * @param b Double
-	 * @param c Double
-	 * @param d Double
-	 * @return 差
-	 */
-	public static Double subtract(Double a, Double b, Double c, Double d) {
-		BigDecimal bigDecimal1 = new BigDecimal(String.valueOf(a));
-		BigDecimal bigDecimal2 = new BigDecimal(String.valueOf(b));
-		BigDecimal bigDecimal3 = new BigDecimal(String.valueOf(c));
-		BigDecimal bigDecimal4 = new BigDecimal(String.valueOf(d));
-		return bigDecimal1.subtract(bigDecimal2).subtract(bigDecimal3).subtract(bigDecimal4).doubleValue();
-	}
-
-	/**
 	 * 功能：除法 保留两位小数点  进一位
 	 * @param a Double
 	 * @param b Double
@@ -295,6 +300,35 @@ public class NumberUtils {
 		return bigDecimal1.divide(bigDecimal2).intValue();
 	}
 
+	// ----------------------------------------------------start
+	/**
+	 * 提供（相对）精确的除法运算，当发生除不尽的情况时，精确到 小数点以后10位，以后的数字四舍五入。
+	 * @param v1 被除数
+	 * @param v2 除数
+	 * @return 两个参数的商
+	 */
+	public static double div(double v1, double v2) {
+
+		return div(v1, v2, 10);
+	}
+
+	/**
+	 * 提供（相对）精确的除法运算。当发生除不尽的情况时，由scale参数指 定精度，以后的数字四舍五入。
+	 * @param v1    被除数
+	 * @param v2    除数
+	 * @param scale 表示表示需要精确到小数点以后几位。
+	 * @return 两个参数的商
+	 */
+	public static double div(double v1, double v2, int scale) {
+		if (scale < 0) {
+			throw new IllegalArgumentException( "The   scale   must   be   a   positive   integer   or   zero");
+		}
+		BigDecimal b1 = new BigDecimal(Double.toString(v1));
+		BigDecimal b2 = new BigDecimal(Double.toString(v2));
+		return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+	}
+	// ----------------------------------------------------end
+
 	/**
 	 * 功能：传入数字默认2位进位处理 如：2.331变成2.34
 	 * 注意：如果传入6.19353454 则返回结果会是6.2
@@ -302,10 +336,11 @@ public class NumberUtils {
 	 * @return 处理结果
 	 */
 	public static Double dealDecimal(Double a) {
+
 		return dealDecimal(a,2);
 	}
 	/**
-	 * 功能：传入数字和进位数字 进位处理 如：2.341 1 则变成2.4
+	 * 功能：传入数字和进位数字 进位处理(四舍五入) 如：2.341 1 则变成2.4
 	 * 注意：如果传入2.9245435 1 则返回结果是3.0，因为2.9然后进一位会变成3.0
 	 * @param a 要处理的数据 Double
 	 * @param decimal 保留的小数个数
@@ -322,6 +357,7 @@ public class NumberUtils {
 	 * @return 处理结果
 	 */
 	public static Double dealDecimalSubDecimal(Double d) {
+
 		return dealDecimalSubDecimal(d,2);
 	}
 

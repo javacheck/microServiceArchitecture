@@ -104,7 +104,7 @@ public abstract class DateUtils {
     }
 
     /**
-     * 功能：获取日期当天开始的时间
+     * 功能：获取日期当天开始的时间（获取时间凌晨）
      * @param date 传入的日期
      * @return 返回当天开始的时间
      */
@@ -116,7 +116,7 @@ public abstract class DateUtils {
     }
 
     /**
-     * 功能：获取日期当天结束的时间
+     * 功能：获取日期当天结束的时间（获取时间最后一刻）
      * @param date 传入的日期
      * @return 返回当天结束的时间
      */
@@ -125,6 +125,34 @@ public abstract class DateUtils {
         dateTime = dateTime.withTime(23, 59, 59, 999);
 
         return dateTime;
+    }
+
+    /**
+     * 获取时间凌晨
+     * @param date
+     * @return
+     */
+    public static Date getDateStartTime(java.util.Date date) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
+    /**
+     * 获取时间最后一刻
+     * @param date
+     * @return
+     */
+    public static Date getDateEndTime(java.util.Date date) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        return calendar.getTime();
     }
 
     /**
@@ -182,7 +210,8 @@ public abstract class DateUtils {
     public static Date getFirstDate(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(getDate(date, DATA_FORMAT));
-        c.set(Calendar.DAY_OF_MONTH, 1);
+        // c.add(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH, 1); // 设置为1号,当前日期既为本月第一天
         return c.getTime();
     }
 
@@ -196,6 +225,40 @@ public abstract class DateUtils {
         c.setTime(date);
         c.set(Calendar.DAY_OF_MONTH, getMaxDayOfMonth(date));
 
+        return c.getTime();
+    }
+
+    /***
+     * 获取指定月的最后一天
+     * @param year
+     * @param month
+     * @return
+     */
+    public static Date getLastDayOfMonth(int year, int month) {
+        Calendar ca = Calendar.getInstance();
+        ca.set(year, month - 1, 1);
+        ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return ca.getTime();
+    }
+
+    /***
+     * 获取本月的第一天
+     * @return
+     */
+    public static Date getFirstDayOfThisMonth() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH, 1);//设置为1号,当前日期既为本月第一天
+        return c.getTime();
+    }
+    /***
+     * 获取上月的第一天
+     * @return
+     */
+    public static Date getFirstDayOfLastMonth() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, -1);
+        c.set(Calendar.DAY_OF_MONTH, 1);//设置为1号,当前日期既为本月第一天
         return c.getTime();
     }
 

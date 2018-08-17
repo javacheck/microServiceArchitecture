@@ -1,8 +1,12 @@
 package cn.self.cloud.commonutils.reflec;
 
+import cn.self.cloud.commonutils.basictype.StringUtils;
 import cn.self.cloud.commonutils.validate.ValidateUtils;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -169,5 +173,126 @@ public abstract class BeanUtils {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+
+// 下面的是从其他地方弄过来的
+    /**
+     * 从指定的bean列表中，取出指定的字段，生成由该字段值组成的ArrayList
+     *
+     * @param cls
+     * @param beanList
+     * @param propertyName
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
+    public static <T> ArrayList<T> fetchPropertyAsList(Class<T> cls,
+                                                       Collection<? extends Object> beanList,
+                                                       String propertyName) throws Exception {
+        ArrayList<T> list = new ArrayList<T>();
+        if (beanList == null || beanList.isEmpty())
+            return list;
+        if (StringUtils.isEmpty(propertyName))
+            return list;
+        for (Object obj : beanList) {
+            Object fvalue = null;
+            Field f = null;
+            Class objCls = obj.getClass();
+            boolean fetched = false;
+            try {
+                f = objCls.getField(propertyName);
+                fvalue = f.get(obj);
+                fetched = true;
+            } catch (NoSuchFieldException e) {
+//                e.printStackTrace();
+            }
+            if (!fetched) {
+                String methodName = "get" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
+                try {
+                    Method m = objCls.getMethod(methodName);
+                    fvalue = m.invoke(obj);
+                    fetched = true;
+                }catch (NoSuchMethodException e){
+                    e.printStackTrace();
+                }
+            }
+            if(fetched) {
+                try {//先尝试强制转换，
+                    T v = (T) fvalue;
+                    list.add(v);
+                } catch (Exception ex) {//如果异常，就用构造函数来试试
+                    Constructor<T> constructor = cls.getConstructor(Object.class);
+                    if (constructor.isAccessible()) {
+                        T v = constructor.newInstance(fvalue);
+                        list.add(v);
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+    public static   <T> Set<T> fetchPropertyAsSet(Class<T> cls, List<? extends Object> beanList, String propertyName)   {
+        Set<T> set = new HashSet<T>();
+        if (beanList == null || beanList.isEmpty())
+            return set;
+        if (StringUtils.isEmpty(propertyName))
+            return set;
+        for (Object obj : beanList) {
+            Object fvalue = null;
+            Field f = null;
+            Class objCls = obj.getClass();
+            boolean fetched = false;
+            try {
+                f = objCls.getField(propertyName);
+                fvalue = f.get(obj);
+                fetched = true;
+            } catch (NoSuchFieldException e) {
+//                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+            }
+            if (!fetched) {
+                String methodName = "get" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
+                try {
+                    Method m = objCls.getMethod(methodName);
+                    fvalue = m.invoke(obj);
+                    fetched = true;
+                }catch (NoSuchMethodException e){
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+//                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+//                    e.printStackTrace();
+                }
+            }
+            if(fetched) {
+                try {//先尝试强制转换，
+                    T v = (T) fvalue;
+                    set.add(v);
+                } catch (Exception ex) {//如果异常，就用构造函数来试试
+                    Constructor<T> constructor = null;
+                    try {
+                        constructor = cls.getConstructor(Object.class);
+                        if (constructor.isAccessible()) {
+                            T v = constructor.newInstance(fvalue);
+                            if(v!=null)
+                                set.add(v);
+                        }
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }
+        return set;
     }
 }

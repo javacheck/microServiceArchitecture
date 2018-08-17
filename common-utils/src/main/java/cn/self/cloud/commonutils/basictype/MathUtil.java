@@ -3,6 +3,7 @@ package cn.self.cloud.commonutils.basictype;
 import cn.self.cloud.commonutils.properties.ConfigUtils;
 import jodd.util.RandomString;
 import java.math.BigDecimal;
+import java.util.Random;
 
 /**
  * 科学计算
@@ -374,6 +375,24 @@ public final class MathUtil {
             sb.append(ranDouble.intValue());
         }
         return sb.toString();
+    }
+
+    public static int random(int size) {
+        if (size == 0) {
+            throw new RuntimeException("Array is Empty.");
+        }
+
+        if (size == 1) {
+            return 0;
+        }
+
+        return new Random().nextInt(size);
+    }
+
+    public static String id() {
+        String code = String.valueOf(Math.abs(StringUtils.uuid().hashCode()));
+        String random = String.valueOf(new Random().nextInt(900) + 100);
+        return code + random;
     }
 
     /**

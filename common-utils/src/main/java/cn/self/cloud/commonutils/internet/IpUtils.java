@@ -3,6 +3,10 @@ package cn.self.cloud.commonutils.internet;
 import cn.self.cloud.commonutils.validate.ValidateUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 public class IpUtils {
 
@@ -25,5 +29,30 @@ public class IpUtils {
         }
 
         return ipAddress;
+    }
+
+    public static String ipv4(){
+        Enumeration allNetInterfaces;
+        try {
+            allNetInterfaces  = NetworkInterface.getNetworkInterfaces();
+        }catch(Exception e) {
+            return null;
+        }
+
+        InetAddress ip = null;
+        while (allNetInterfaces.hasMoreElements()) {
+            NetworkInterface netInterface = (NetworkInterface) allNetInterfaces.nextElement();
+            Enumeration addresses = netInterface.getInetAddresses();
+            while (addresses.hasMoreElements()) {
+                ip = (InetAddress) addresses.nextElement();
+                if (ip != null && ip instanceof Inet4Address) {
+                    if (ip.getHostAddress().equals("127.0.0.1") || ip.getHostAddress().equals("localhost")) {
+                        continue;
+                    }
+                    return ip.getHostAddress();
+                }
+            }
+        }
+        return null;
     }
 }
