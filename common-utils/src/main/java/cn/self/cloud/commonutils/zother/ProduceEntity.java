@@ -58,7 +58,7 @@ public class ProduceEntity {
                 content.append("import javax.persistence.Id;\r\n" +
                         "import javax.persistence.Table;\r\n" +
                         "import java.io.Serializable;\r\n");
-                content.append("/**\r\n  * Created by cp on " + DateFormatUtils.formatToday() + ".\r\n  */\r\n");
+                // content.append("/**\r\n  * Created by cp on " + DateFormatUtils.formatToday() + ".\r\n  */\r\n");
 
                 content.append("@Table(name = \"" + tableName + "\") \r\n");
                 content.append("@Comment(\"" + tableRemark + "\")\r\n");
