@@ -1,5 +1,6 @@
 package cn.self.cloud.commonutils.simple;
 
+import cn.self.cloud.commonutils.jedis.RedisServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

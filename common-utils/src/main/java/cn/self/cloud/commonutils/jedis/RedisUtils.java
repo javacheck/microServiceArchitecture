@@ -3,13 +3,12 @@ package cn.self.cloud.commonutils.jedis;
 import cn.self.cloud.commonutils.jedis.util.Jedis;
 import cn.self.cloud.commonutils.jedis.util.JedisPool;
 import cn.self.cloud.commonutils.jedis.util.Pipeline;
-import com.niuyun.beans.RedisOpration;
-
-import com.niuyun.comm.*;
+import cn.self.cloud.commonutils.jedis.util.RedisOpration;
+import cn.self.cloud.commonutils.simple.ConfigHelper;
+import cn.self.cloud.commonutils.simple.ServerInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -192,7 +191,7 @@ public class RedisUtils {
                         Pipeline pipeline = jedis.pipelined();
                         pipelist.add(pipeline);
                     } catch (Exception e) {
-                        logger.error(LogUtils.getErrorInfo(e));
+                        //logger.error(LogUtils.getErrorInfo(e));
                         if (jedis != null) {
                             jedisPool.returnBrokenResource(jedis);
                         }

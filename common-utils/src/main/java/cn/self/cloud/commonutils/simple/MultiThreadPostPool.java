@@ -1,7 +1,6 @@
 package cn.self.cloud.commonutils.simple;
 
-
-import com.niuyun.beans.HyInfo;
+import cn.self.cloud.commonutils.password.MurmurHash2;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;

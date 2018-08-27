@@ -14,6 +14,10 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Random;
 
+/**
+ * zxing 是由google开源的1D/2D编解码类库。目标是能够对QR编码、Data Matrix、UPC的1D条形码进行解码。
+ * 二维码相对于条形码的优势：数据容量更大；超越了字母数字的限制；具有抗损毁能力
+ */
 public class QRCodeUtil {
     private static final String CHARSET = "utf-8";
     private static final String FORMAT_NAME = "png";
@@ -379,9 +383,14 @@ public class QRCodeUtil {
 
 
     public static void main(String[] args) {
-        File file = new File("F:/c.jpg");
-        encode(2,"www.lastmiles.cn",500,file);
-        System.out.println(decode2(file));
+        // File file = new File("F:/c.jpg");
+        // encode(2,"www.lastmiles.cn",500,file);
+        // System.out.println(decode2(file));
+        try {
+            encode("http://www.baidu.com", "S:/56.jpg", "S:/MyWorkDoc", true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -402,6 +411,7 @@ public class QRCodeUtil {
             BufferedImageLuminanceSource source = new BufferedImageLuminanceSource(image);
             BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
             Hashtable<DecodeHintType, Object> hints = new Hashtable<DecodeHintType, Object>();
+            // 注意要使用 utf-8，因为刚才生成二维码时，使用了utf-8
             hints.put(DecodeHintType.CHARACTER_SET, "utf-8");
             result = new MultiFormatReader().decode(bitmap,hints);
         } catch (Exception e){

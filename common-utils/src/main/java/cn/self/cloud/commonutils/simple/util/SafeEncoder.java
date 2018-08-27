@@ -1,8 +1,8 @@
 package cn.self.cloud.commonutils.simple.util;
 
-import cn.self.cloud.commonutils.jedis.Protocol;
 import cn.self.cloud.commonutils.jedis.exceptions.JedisDataException;
 import cn.self.cloud.commonutils.jedis.exceptions.JedisException;
+import cn.self.cloud.commonutils.jedis.util.Protocol;
 
 import java.io.UnsupportedEncodingException;
 
